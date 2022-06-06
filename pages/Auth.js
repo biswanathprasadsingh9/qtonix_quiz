@@ -34,7 +34,7 @@ export default function Auth(props) {
         if(user===undefined){
             router.push('/login')
         }
-    },[])
+    },[router])
 
   return (
     <>

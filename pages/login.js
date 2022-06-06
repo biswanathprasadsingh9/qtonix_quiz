@@ -7,7 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import cookie from 'react-cookies';
 
-export const login = (props) => {
+export const Login = (props) => {
     const router = useRouter()
 
     const simpleValidator = useRef(new SimpleReactValidator());
@@ -90,7 +90,7 @@ export const login = (props) => {
             <div className="col-xl-5 order-2 order-xl-0">
                 <div className="signup-area-textwrapper">
                 <h2 className="font-title--md mb-0">Login</h2>
-                <p className="mt-2 mb-lg-4 mb-3">Don't have account? <a href="signup.html" className="text-black-50">Sign up</a></p>
+                <p className="mt-2 mb-lg-4 mb-3">Don&apos;t have account? <a href="signup.html" className="text-black-50">Sign up</a></p>
                 <form onSubmit={handleSubmit}>
                     
                    
@@ -146,4 +146,4 @@ const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(login)
+export default connect(mapStateToProps, mapDispatchToProps)(Login)

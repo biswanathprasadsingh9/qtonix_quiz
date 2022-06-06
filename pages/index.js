@@ -43,7 +43,7 @@ export default function Home() {
  
   <section className="section feature section section--bg-offwhite-one">
     <div className="container">
-      <h2 className="font-title--md text-center">Why You'll Learn with Eduguard</h2>
+      <h2 className="font-title--md text-center">Why You&apos;ll Learn with Eduguard</h2>
       <div className="row">
         <div className="col-lg-4 col-md-6">
           <div className="cardFeature">
