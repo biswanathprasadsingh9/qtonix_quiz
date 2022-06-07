@@ -3,14 +3,32 @@ import { connect } from 'react-redux'
 import Auth from './Auth'
 import Body from './components/Body'
 import cookie from 'react-cookies';
-
+import axios from 'axios';
+import Link from 'next/link';
 
 export const Account = (props) => {
-
+    const [loadingPage,setloadingPage]=useState(true);
+    const [examfound,setExamFound]=useState(false);
     const [userinfo,setUserInfo]=useState(cookie.load('qtonix_quiz_userdata'));
+    const [examinfo,setUExaminfo]=useState(null);
+    const [questions,setQuestions]=useState(null);
+
 
     useEffect(()=>{
+      axios.post(`${process.env.backendURL}/exam/latestexam`)
+     .then(response=>{
+       console.log(response.data)
 
+        if(response.data.examinfo){
+          setUExaminfo(response.data.examinfo);
+          setQuestions(response.data.questions);
+          setloadingPage(false);
+          setExamFound(true);
+        }else{
+          setloadingPage(false);
+          setExamFound(false);
+        }
+     })
     },[])
 
   return (
@@ -24,8 +42,11 @@ export const Account = (props) => {
     </div>
   </div>
  
- {userinfo===undefined
- ?<></>
+ {userinfo===undefined || loadingPage===true
+ ?
+ <center>
+   <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
+ </center>
  :
   <section className="section students-info">
     <div className="container">
@@ -35,7 +56,7 @@ export const Account = (props) => {
           <div>
             <div className="students-info-intro-start">
               <div className="image">
-                <img src="dist/images/user/user-img-01.jpg" alt="Student" />
+                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Student" />
               </div>
               <div className="text">
                 <h5>{userinfo.name}</h5>
@@ -44,6 +65,8 @@ export const Account = (props) => {
             </div>
           </div>
           <div>
+            {examfound
+            ?
             <div className="students-info-intro-end">
               <div className="enrolled-courses">
                 <div className="enrolled-courses-icon">
@@ -53,101 +76,27 @@ export const Account = (props) => {
                   </svg>
                 </div>
                 <div className="enrolled-courses-text">
-                  <h6 className="font-title--xs">24</h6>
-                  <p className="fs-6 mt-1">Enrolled Courses</p>
-                </div>
-              </div>
-              <div className="completed-courses">
-                <div className="completed-courses-icon">
-                  <svg width={22} height={26} viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path fillRule="evenodd" clipRule="evenodd" d="M19.1716 3.95235C19.715 4.14258 20.078 4.65484 20.078 5.23051V13.6518C20.078 16.0054 19.2226 18.2522 17.7119 19.9929C16.9522 20.8694 15.9911 21.552 14.9703 22.1041L10.5465 24.4938L6.11516 22.1028C5.09312 21.5508 4.13077 20.8694 3.36983 19.9916C1.85791 18.2509 1 16.0029 1 13.6468V5.23051C1 4.65484 1.36306 4.14258 1.90641 3.95235L10.0902 1.07647C10.3811 0.974511 10.6982 0.974511 10.9879 1.07647L19.1716 3.95235Z" stroke="#00AF91" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M7.30688 12.4002L9.65931 14.7538L14.5059 9.90723" stroke="#00AF91" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div>
-                <div className="completed-courses-text">
-                  <h5 className="font-title--xs">19</h5>
-                  <p className="fs-6 mt-1">Completed Courses</p>
+                  <p className="fs-6 mt-1"><Link href={'/exam'}>Click here to start exam</Link></p>
                 </div>
               </div>
             </div>
+            :
+            <div className="students-info-intro-end">
+              <div className="enrolled-courses">
+                <h3>No exam found</h3>
+              </div>
+            </div>
+            }
+            
           </div>
         </div>
         {/* Nav  */}
-        <nav className="students-info-intro__nav">
-          <div className="nav" id="nav-tab" role="tablist">
-            <button className="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="true">My Profile</button>
-            <button className="nav-link" id="nav-coursesall-tab" data-bs-toggle="tab" data-bs-target="#nav-coursesall" type="button" role="tab" aria-controls="nav-coursesall" aria-selected="false">All Courses</button>
-            <button className="nav-link" id="nav-activecourses-tab" data-bs-toggle="tab" data-bs-target="#nav-activecourses" type="button" role="tab" aria-controls="nav-activecourses" aria-selected="false">
-              Active Courses
-            </button>
-            <button className="nav-link" id="nav-completedcourses-tab" data-bs-toggle="tab" data-bs-target="#nav-completedcourses" type="button" role="tab" aria-controls="nav-completedcourses" aria-selected="false">
-              Completed Courses
-            </button>
-            <button className="nav-link" id="nav-purchase-tab" data-bs-toggle="tab" data-bs-target="#nav-purchase" type="button" role="tab" aria-controls="nav-purchase" aria-selected="false">Purchase History</button>
-            <button className="nav-link" id="nav-setting-tab" data-bs-toggle="tab" data-bs-target="#nav-setting" type="button" role="tab" aria-controls="nav-setting" aria-selected="false">Setting</button>
-            <button className="nav-link" id="nav-logout-tab" data-bs-toggle="tab" data-bs-target="#nav-logout" type="button" role="tab" aria-controls="nav-logout-tab" aria-selected="false">Logout</button>
-          </div>
-        </nav>
+        <br/>
+        <br/>
+
       </div>
-      <div className="row students-info-intro d-none">
-        <div className="col-lg-6">
-          <div className="students-info-intro-start">
-            <div className="image">
-              <img src="dist/images/user/user-img-01.jpg" alt="Student" />
-            </div>
-            <div className="text">
-              <h5>Phillip Bergson</h5>
-              <p>UI/UX Designer</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-lg-6">
-          <div className="students-info-intro-end">
-            <div className="enrolled-courses">
-              <div className="enrolled-courses-icon">
-                <svg width={28} height={26} viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path d="M1 1.625H8.8C10.1791 1.625 11.5018 2.15764 12.477 3.10574C13.4521 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 13.5891 22.405 12.8577 21.6939C12.1263 20.9828 11.1343 20.5833 10.1 20.5833H1V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M27 1.625H19.2C17.8209 1.625 16.4982 2.15764 15.523 3.10574C14.5479 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 14.4109 22.405 15.1423 21.6939C15.8737 20.9828 16.8657 20.5833 17.9 20.5833H27V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div className="enrolled-courses-text">
-                <h6 className="font-title--xs">24</h6>
-                <p className="fs-6 mt-1">Enrolled Courses</p>
-              </div>
-            </div>
-            <div className="completed-courses">
-              <div className="completed-courses-icon">
-                <svg width={22} height={26} viewBox="0 0 22 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                  <path fillRule="evenodd" clipRule="evenodd" d="M19.1716 3.95235C19.715 4.14258 20.078 4.65484 20.078 5.23051V13.6518C20.078 16.0054 19.2226 18.2522 17.7119 19.9929C16.9522 20.8694 15.9911 21.552 14.9703 22.1041L10.5465 24.4938L6.11516 22.1028C5.09312 21.5508 4.13077 20.8694 3.36983 19.9916C1.85791 18.2509 1 16.0029 1 13.6468V5.23051C1 4.65484 1.36306 4.14258 1.90641 3.95235L10.0902 1.07647C10.3811 0.974511 10.6982 0.974511 10.9879 1.07647L19.1716 3.95235Z" stroke="#00AF91" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  <path d="M7.30688 12.4002L9.65931 14.7538L14.5059 9.90723" stroke="#00AF91" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </div>
-              <div className="completed-courses-text">
-                <h5 className="font-title--xs">19</h5>
-                <p className="fs-6 mt-1">Completed Courses</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-12">
-          <nav>
-            <div className="nav" id="nav-tab" role="tablist">
-              <button className="nav-link active" id="nav-profile-tab" data-bs-toggle="tab" data-bs-target="#nav-profile" type="button" role="tab" aria-controls="nav-profile" aria-selected="true">My Profile</button>
-              <button className="nav-link" id="nav-coursesall-tab" data-bs-toggle="tab" data-bs-target="#nav-coursesall" type="button" role="tab" aria-controls="nav-coursesall" aria-selected="false">All Courses</button>
-              <button className="nav-link" id="nav-activecourses-tab" data-bs-toggle="tab" data-bs-target="#nav-activecourses" type="button" role="tab" aria-controls="nav-activecourses" aria-selected="false">
-                Active Courses
-              </button>
-              <button className="nav-link" id="nav-completedcourses-tab" data-bs-toggle="tab" data-bs-target="#nav-completedcourses" type="button" role="tab" aria-controls="nav-completedcourses" aria-selected="false">
-                Completed Courses
-              </button>
-              <button className="nav-link" id="nav-purchase-tab" data-bs-toggle="tab" data-bs-target="#nav-purchase" type="button" role="tab" aria-controls="nav-purchase" aria-selected="false">Purchase History</button>
-              <button className="nav-link" id="nav-setting-tab" data-bs-toggle="tab" data-bs-target="#nav-setting" type="button" role="tab" aria-controls="nav-setting" aria-selected="false">Setting</button>
-              <button className="nav-link" id="nav-logout-tab" data-bs-toggle="tab" data-bs-target="#nav-logout" type="button" role="tab" aria-controls="nav-logout-tab" aria-selected="false">Logout</button>
-            </div>
-          </nav>
-        </div>
-      </div>
-     
+      
+     <br/>
     </div>
   </section>
   }
