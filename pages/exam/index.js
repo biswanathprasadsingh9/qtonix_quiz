@@ -7,6 +7,7 @@ import Body from "../components/Body";
 import cookie from 'react-cookies';
 import _ from 'lodash'
 import Countdown from 'react-countdown';
+import ExamTimeOut from "../components/exam/ExamTimeOut";
 
 export class Exam extends Component {
 
@@ -18,7 +19,8 @@ export class Exam extends Component {
         exam_question_answer_data:null,
         showQuestion:1,
         exam_timer:0,
-        exam_start:false
+        exam_start:false,
+        exam_timeout:false
      }
  }
 
@@ -44,6 +46,7 @@ export class Exam extends Component {
                     exam_question_answer_data:response1.data.datas.exam_question_answer_data,
                     exam_start:response1.data.datas.exam_start,
                     exam_start_time:response1.data.datas.exam_start_time,
+                    exam_timeout:response1.data.datas.exam_timeout,
                 })
             })
 
@@ -111,6 +114,56 @@ export class Exam extends Component {
  }
 
 
+    // Renderer callback with condition
+    renderer = ({ hours, minutes, seconds, completed }) => {
+        if (completed) {
+        
+           return <ExamTimeOut />;
+
+        } else {
+        // Render a countdown
+        return <span>{hours}:{minutes}:{seconds}</span>;
+        }
+    };
+
+
+    examTimeout=()=>{
+        var temp_data={
+            exam_id:this.state.exam_info._id,
+            user_id:cookie.load('qtonix_quiz_userdata')._id,
+            exam_timeout:true,
+        }
+        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+        .then(response=>{
+            this.setState({
+                exam_timeout:true
+            })
+        })
+    }
+
+
+    onMountTimeout=({ hours, minutes, seconds, completed })=>{
+        if(completed){
+            var temp_data={
+                exam_id:this.state.exam_info._id,
+                user_id:cookie.load('qtonix_quiz_userdata')._id,
+                exam_timeout:true,
+            }
+            axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+            .then(response=>{
+                this.setState({
+                    exam_timeout:true
+                })
+            })
+        }
+    }
+
+
+    handleSubmitExam=()=>{
+        alert(13)
+    }
+
+
   render() {
     return (
       <Body>
@@ -136,11 +189,44 @@ export class Exam extends Component {
                     {this.state.exam_start
                     ?
                     <>
+
+                        {this.state.exam_timeout
+                        ?
+                        <>
                         <div className="col-md-12">
                             <center>
-                                <Countdown date={Number(this.state.exam_start_time) + 60*60*1000}>
+                                <h2>Time Out</h2>
+                                <br/>
+                                <p>Total: {this.state.exam_question_answer_data.length}</p>
+                                <p>Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
+                                <p>Unanswerrd: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
+                                <br/>
+                                <button className="btn btn-primary text-white" onClick={this.handleSubmitExam}>Submit</button>
+                            </center>
+                        </div>
+                        </>
+                        :
+                        <>
+                        <div className="col-md-12">
+                            <center>
+                                {/* <Countdown date={Number(this.state.exam_start_time) + 60*60*1000}>
                                     <p>Completed</p>
-                                </Countdown>
+                                </Countdown> */}
+
+                                {/* <Countdown
+                                    date={Date.now() + 5000}
+                                    renderer={this.renderer}
+                                    onComplete={this.examTimeout}
+                                /> */}
+
+                                
+                                <Countdown
+                                    date={Number(this.state.exam_start_time) + Number(this.state.exam_info.duration)*60*1000}
+                                    renderer={this.renderer}
+                                    onComplete={this.examTimeout}
+                                    onMount={this.onMountTimeout}
+                                />                              
+
                             </center>
                         </div>
                         <div className="col-md-8">
@@ -211,6 +297,9 @@ export class Exam extends Component {
 
                             </div>
                         </div>
+                        </>
+                        }
+                        
                     </>
                     :
                     <>
