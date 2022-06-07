@@ -93,6 +93,19 @@ export class Exam extends Component {
 
     console.log(datas)
 
+
+    var temp_data={
+        exam_id:this.state.exam_info._id,
+        user_id:cookie.load('qtonix_quiz_userdata')._id,
+        exam_question_answer_data:datas,
+    }
+
+
+    //update data on checkbox click
+    axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+    .then(response=>{
+        console.log('success')
+    })
     
 
  }
@@ -174,10 +187,19 @@ export class Exam extends Component {
                         <div className="col-md-4">
                             <div className="students-info-intro m2">
                                 {this.state.exam_question_answer_data.map((exd,key)=>{
-                                    return(
+
+                                    if(exd.answer_user===undefined){
+                                        return(
                                         
-                                        <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
-                                    )
+                                            <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`}>{key+1}</p>
+                                        )
+                                    }else{
+                                        return(
+                                        
+                                            <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
+                                        )
+                                    }
+                                    
                                 })}
 
                                 <br/>
