@@ -176,7 +176,7 @@ export class Exam extends Component {
                                 {this.state.exam_question_answer_data.map((exd,key)=>{
                                     return(
                                         
-                                        <p className={exd.answer_user===undefined?`test_11`:`test_11a`} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
+                                        <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
                                     )
                                 })}
 
