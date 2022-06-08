@@ -38,7 +38,7 @@ export const Account = (props) => {
   {/* Breadcrumb Starts Here */}
   <div className="py-0 mt-5">
     <div className="container">
-      <h3>My Account</h3>
+      <h3>Dashboard</h3>
     </div>
   </div>
  

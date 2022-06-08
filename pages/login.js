@@ -61,7 +61,7 @@ export const Login = (props) => {
                         cookie.save('qtonix_quiz_userdata', response.data.data, { path: '/',expires });
                         cookie.save('qtonix_quiz_userid', response.data.data._id, { path: '/',expires });
 
-                        router.push(`/account`)
+                        router.push(`/dashboard`)
 
     
                     }else{

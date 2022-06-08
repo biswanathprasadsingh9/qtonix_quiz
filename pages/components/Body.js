@@ -39,7 +39,7 @@ export class Body extends Component {
       <div className="container">
         {/* Logo */}
         <a className="navbar-brand" href="index.html">
-          <img src="dist/images/logo/logo.png" alt="Logo" className="img-fluid" />
+          <img src="https://cdn.pixabay.com/photo/2017/02/17/15/25/quiz-2074324_960_720.png" alt="Logo" className="img-fluid" style={{height:'60px'}}/>
         </a>
         <button className="menu-icon-container">
           <span className="menu-icon" />
@@ -131,6 +131,7 @@ export class Body extends Component {
               </>
             :
               <>
+              <Link href={'/dashboard'}><a className="button button--text">Dashboard</a></Link>
               <p className="button button--text" onClick={this.handleLogout} style={{cursor:'pointer'}}>Logout</p>
               </>
             }
@@ -295,7 +296,7 @@ export class Body extends Component {
 {this.props.children}
 
   <footer className="footer footer--two">
-    <div className="container">
+    {/* <div className="container">
       <div className="row">
         <div className="col-lg-6">
           <div className="footer__wrapper">
@@ -429,7 +430,7 @@ export class Body extends Component {
           </div>
         </div>
       </div>
-    </div>
+    </div> */}
     <div className="footer__bottom">
       <div className="container">
         <div className="footer__bottom-content">

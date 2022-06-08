@@ -30,12 +30,16 @@ export const Result = (props) => {
                 setloadingPage(false)
                 setUExaminfo(response.data.data)
             }else{
-                router.query.push('/account')
+                router.query.push('/dashboard')
             }
         })
 
       
     },[])
+
+
+
+    
 
   return (
     <Body>
@@ -66,7 +70,20 @@ export const Result = (props) => {
                                 <p>Unanswerrd: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
                                 <br/>
                                 <br/>
-                                <h3>Pass (30%)</h3>
+                                <h4>Pass Mark: {examinfo.exam_info.pass_percentage}%</h4>
+                                
+                                {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)>=examinfo.exam_info.pass_percentage
+                                ?
+                                <>
+                                <h4>Pass {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} %</h4>
+                                </>
+                                :
+                                <>
+                                <h4>Fail {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} %</h4>
+                                </>
+                                }
+
+                                
                             </div>
                         </div>
                         <div>
