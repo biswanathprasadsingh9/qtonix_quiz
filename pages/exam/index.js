@@ -351,7 +351,15 @@ export class Exam extends Component {
                     </>
                     :
                     <>
+                        
+
+                        <br />
+                            <br />
                         <center>
+                            <h3>{this.state.exam_info.name}</h3>
+                            <p>{this.state.exam_info.duration} minutes</p>
+                            <br />
+
                             <button className="btn btn-primary text-white" onClick={()=>this.startExam()}>Start Exam</button>
                         </center>
                     </>

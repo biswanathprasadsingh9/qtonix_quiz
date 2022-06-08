@@ -76,7 +76,7 @@ export const Account = (props) => {
                   </svg>
                 </div>
                 <div className="enrolled-courses-text">
-                  <p className="fs-6 mt-1"><Link href={'/exam'}>Click here to start exam</Link></p>
+                  <p className="fs-6 mt-1"><Link href={'/exam'}>Go to exam</Link></p>
                 </div>
               </div>
             </div>
