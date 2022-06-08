@@ -6,14 +6,13 @@ import cookie from 'react-cookies';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
+import _ from 'lodash';
 
 export const Result = (props) => {
     const router = useRouter()
     const [loadingPage,setloadingPage]=useState(true);
-    const [examfound,setExamFound]=useState(false);
     const [userinfo,setUserInfo]=useState(cookie.load('qtonix_quiz_userdata'));
     const [examinfo,setUExaminfo]=useState(null);
-    const [questions,setQuestions]=useState(null);
 
 
     useEffect(()=>{
@@ -25,7 +24,15 @@ export const Result = (props) => {
             exam_id:router.query.e,
         }
 
-        console.log(data)
+        axios.post(`${process.env.backendURL}/exam/view_score`,data)
+        .then(response=>{
+            if(response.data.response){
+                setloadingPage(false)
+                setUExaminfo(response.data.data)
+            }else{
+                router.query.push('/account')
+            }
+        })
 
       
     },[])
@@ -41,7 +48,7 @@ export const Result = (props) => {
             </div>
         </div>
         
-        {userinfo===undefined || loadingPage===true
+        {userinfo===undefined || loadingPage===true || examinfo===null
         ?
         <center>
         <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
@@ -53,10 +60,10 @@ export const Result = (props) => {
                     <div className="students-info-intro__profile">
                         <div>
                             <div className="">
-                                <h3>Your Result: 15/100 points</h3>
-                                <p>Total: 100</p>
-                                <p>Answered: 100</p>
-                                <p>Unanswerrd: 100</p>
+                                <h3>Your Result: {examinfo.exam_score}/{examinfo.exam_question_answer_data.length} points</h3>
+                                <p>Total: {examinfo.exam_question_answer_data.length}</p>
+                                <p>Answered: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
+                                <p>Unanswerrd: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
                                 <br/>
                                 <br/>
                                 <h3>Pass (30%)</h3>
@@ -80,7 +87,37 @@ export const Result = (props) => {
                     <div className="">
                         
 
-                        <div className='qbox'>
+                        {examinfo.exam_question_answer_data.map((data,key)=>{
+                            return(
+                                <div className='qbox' key={key}>
+                                    <h5>{key+1}- {data.question}</h5>
+                                    {data.options.map((optn,okey)=>{
+
+                                        if(data.answer_user===undefined){
+                                            return(
+                                                <p key={okey}>{okey+1}. <span>{optn}</span></p>
+                                            )
+                                        }else{
+
+                                            if(data.answer_user===data.answer){
+                                                return(
+                                                    <p key={okey}>{okey+1}. <span className={okey+1===data.answer_user?`bg-correct`:``}>{optn}</span>  {okey+1===data.answer_user?<span className='textcorrect'>+1 Point</span>:``}</p>
+                                                )
+                                            }else{
+                                                return(
+                                                    <p key={okey}>{okey+1}. <span className={okey+1===data.answer_user?`bg-wrong`:``}>{optn}</span></p>
+                                                )
+                                            }
+                                        }
+                                    })}
+                                    <h6>Ans: {data.options[data.answer-1]}</h6>
+                                    
+                                    
+                                </div>
+                            )
+                        })}
+
+                        {/* <div className='qbox'>
                             <h5>1- What is your name?</h5>
                             <p>1- John</p>
                             <p><span className='bg-correct'>2- Ron</span></p>
@@ -107,7 +144,7 @@ export const Result = (props) => {
                             <p>4- Peter</p>
                             <h6 className='textwrong'>Score- 0</h6>
 
-                        </div>
+                        </div> */}
 
 
                     </div>

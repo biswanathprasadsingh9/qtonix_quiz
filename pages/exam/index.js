@@ -5,7 +5,7 @@ import { connect } from "react-redux";
 import Auth from "../Auth";
 import Body from "../components/Body";
 import cookie from 'react-cookies';
-import _ from 'lodash'
+import _, { each } from 'lodash'
 import Countdown from 'react-countdown';
 import ExamTimeOut from "../components/exam/ExamTimeOut";
 
@@ -20,7 +20,8 @@ export class Exam extends Component {
         showQuestion:1,
         exam_timer:0,
         exam_start:false,
-        exam_timeout:false
+        exam_timeout:false,
+        exam_score:0
      }
  }
 
@@ -169,10 +170,34 @@ export class Exam extends Component {
 
 
     handleSubmitExam=()=>{
+
+        var score=0;
+
+        // console.log(this.state.exam_question_answer_data)
+
+
+        this.state.exam_question_answer_data.forEach(element => {
+
+            if(element.answer_user!==undefined){
+                // console.log(element);
+                // console.log(element.answer_user);
+                // console.log(element.answer);
+
+                if(element.answer_user===element.answer){
+                    score=score+1
+                }
+            }
+        });
+        this.setState({
+            exam_score:score
+        })
+
+
         var temp_data={
             exam_id:this.state.exam_info._id,
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_finished:true,
+            exam_score:score
         }
         axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
         .then(response=>{
@@ -316,7 +341,8 @@ export class Exam extends Component {
                                 <p>Total: {this.state.exam_question_answer_data.length}</p>
                                 <p>Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
                                 <p>Unanswerrd: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
-
+                                <br/>
+                                <button className="btn btn-primary text-white" onClick={()=>this.handleSubmitExam()}>Submit Exam</button>
                             </div>
                         </div>
                         </>
