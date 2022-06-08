@@ -68,6 +68,12 @@ export const Result = (props) => {
                                 <p>Total: {examinfo.exam_question_answer_data.length}</p>
                                 <p>Answered: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
                                 <p>Unanswerrd: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
+                                
+                                <p>Correct: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
+                                <p>Wrong: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length-_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
+
+                                
+                                
                                 <br/>
                                 <br/>
                                 <h4>Pass Mark: {examinfo.exam_info.pass_percentage}%</h4>
