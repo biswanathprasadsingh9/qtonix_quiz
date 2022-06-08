@@ -197,6 +197,7 @@ export class Exam extends Component {
             exam_id:this.state.exam_info._id,
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_finished:true,
+            exam_timeout:true,
             exam_score:score
         }
         axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
