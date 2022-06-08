@@ -40,14 +40,23 @@ export class Exam extends Component {
             //create exam under user
             axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
             .then(response1=>{
-                this.setState({
-                    loadingPage:false,
-                    exam_info:response1.data.datas.exam_info,
-                    exam_question_answer_data:response1.data.datas.exam_question_answer_data,
-                    exam_start:response1.data.datas.exam_start,
-                    exam_start_time:response1.data.datas.exam_start_time,
-                    exam_timeout:response1.data.datas.exam_timeout,
-                })
+                
+                console.log(response.data.examinfo._id)
+              
+                if(response1.data.datas.exam_timeout){
+                    Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
+                }else{
+                    this.setState({
+                        loadingPage:false,
+                        exam_info:response1.data.datas.exam_info,
+                        exam_question_answer_data:response1.data.datas.exam_question_answer_data,
+                        exam_start:response1.data.datas.exam_start,
+                        exam_start_time:response1.data.datas.exam_start_time,
+                        exam_timeout:response1.data.datas.exam_timeout,
+                    })
+                }
+
+                
             })
 
          }else{
@@ -160,7 +169,20 @@ export class Exam extends Component {
 
 
     handleSubmitExam=()=>{
-        alert(13)
+        var temp_data={
+            exam_id:this.state.exam_info._id,
+            user_id:cookie.load('qtonix_quiz_userdata')._id,
+            exam_finished:true,
+        }
+        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+        .then(response=>{
+            this.setState({
+                exam_timeout:true
+            })
+            Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${temp_data.exam_id}&u=${temp_data.user_id}`)
+        })
+
+        
     }
 
 
