@@ -42,7 +42,7 @@ export class Exam extends Component {
             axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
             .then(response1=>{
                 
-                console.log(response.data.examinfo._id)
+                console.log(response.data.examinfo)
               
                 if(response1.data.datas.exam_timeout){
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
