@@ -134,6 +134,7 @@ export class Body extends Component {
             :
               <>
               <Link href={'/dashboard'}><a className="button button--text">Dashboard</a></Link>
+              <Link href={'/profile'}><a className="button button--text">Profile</a></Link>
               <p className="button button--text" onClick={this.handleLogout} style={{cursor:'pointer'}}>Logout</p>
               </>
             }
