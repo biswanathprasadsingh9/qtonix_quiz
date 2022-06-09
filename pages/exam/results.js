@@ -33,13 +33,7 @@ export const Result = (props) => {
                 router.query.push('/dashboard')
             }
         })
-
-      
     },[])
-
-
-
-    
 
   return (
     <Body>
@@ -64,6 +58,7 @@ export const Result = (props) => {
                     <div className="students-info-intro__profile">
                         <div>
                             <div className="">
+                                <h2>Exam ID: {examinfo.student_exam_code}</h2>
                                 <h3>Your Result: {examinfo.exam_score}/{examinfo.exam_question_answer_data.length} points</h3>
                                 <p>Total: {examinfo.exam_question_answer_data.length}</p>
                                 <p>Answered: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
@@ -95,7 +90,7 @@ export const Result = (props) => {
                         <div>
                             <div className="students-info-intro-end">
                                 <div className="enrolled-courses">
-                                    <h3 className='text-center'>Download Certificate</h3>
+                                    <a className='btn btn-primary text-white' href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`}>Download Certificate</a>
                                 </div>
                             </div>
                         </div>

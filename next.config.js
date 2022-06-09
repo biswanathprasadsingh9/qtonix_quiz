@@ -11,6 +11,8 @@ const nextConfig = {
   reactStrictMode: true,
   env: {
     backendURL: process.env.DB_BACKENDURL+'/api',
+    backendURLPDF: process.env.DB_BACKENDURL+'/pdf/',
+
 
   },
 }

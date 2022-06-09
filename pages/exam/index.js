@@ -200,7 +200,7 @@ export class Exam extends Component {
             exam_timeout:true,
             exam_score:score
         }
-        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+        axios.post(`${process.env.backendURL}/exam/submit_exam`,temp_data)
         .then(response=>{
             this.setState({
                 exam_timeout:true
