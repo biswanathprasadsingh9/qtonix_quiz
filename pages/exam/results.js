@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import Auth from '../Auth'
-import Body from '../components/Body'
+import QuizBody from '../components/QuizBody'
 import cookie from 'react-cookies';
 import axios from 'axios';
 import Link from 'next/link';
 import { useRouter } from 'next/router'
 import _ from 'lodash';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 export const Result = (props) => {
     const router = useRouter()
@@ -36,7 +38,7 @@ export const Result = (props) => {
     },[])
 
   return (
-    <Body>
+    <QuizBody>
 
         <Auth>
         {/* Breadcrumb Starts Here */}
@@ -55,47 +57,95 @@ export const Result = (props) => {
         <section className="section students-info">
             <div className="container">
                 <div className="students-info-intro">
-                    <div className="students-info-intro__profile">
-                        <div>
-                            <div className="">
-                                <h2>Exam ID: {examinfo.student_exam_code}</h2>
-                                <h3>Your Result: {examinfo.exam_score}/{examinfo.exam_question_answer_data.length} points</h3>
-                                <p>Total: {examinfo.exam_question_answer_data.length}</p>
-                                <p>Answered: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
-                                <p>Unanswerrd: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
+                    <div className=" row">
+                        <div className="col-md-6">
+                            <div className=" mt-5 ms-3">
+                                <h1 className="h4">Exam ID: {examinfo.student_exam_code}</h1>
+                                  <br/>
+                                <h3 className="h5">Your Result: {examinfo.exam_score} Marks</h3>
+                                 <br/>
+                                <p>Attempted: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}/{examinfo.exam_question_answer_data.length}</p>
+                                {/*<p>Unanswered: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>*/}
                                 
-                                <p>Correct: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
-                                <p>Wrong: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length-_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
-
+                                <p style={{color:'#00c800'}}>Correct: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
+                                <p style={{color:'red'}}>Wrong: {_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length-_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length}</p>
                                 
                                 
-                                <br/>
-                                <br/>
-                                <h4>Pass Mark: {examinfo.exam_info.pass_percentage}%</h4>
-                                
-                                {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)>=examinfo.exam_info.pass_percentage
-                                ?
-                                <>
-                                <h4>Pass {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} %</h4>
-                                </>
-                                :
-                                <>
-                                <h4>Fail {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} %</h4>
-                                </>
-                                }
-
                                 
                             </div>
                         </div>
-                        <div>
-                            <div className="students-info-intro-end">
-                                <div className="enrolled-courses">
-                                    <a className='btn btn-primary text-white' href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`}>Download Certificate</a>
-                                    <a className='btn btn-primary text-white' href={`/certificate?id=${examinfo.student_exam_code}`} target={'_blank'} rel="noreferrer">View Certificate</a>
+                        <div className="col-md-6 pt-5">
+                            <center>
+                                {/*<div class="progress blue">
+                                    <span class="progress-left">
+                                           <span class="progress-bar"></span>
+                                    </span>
+                                    <span class="progress-right">
+                                        <span class="progress-bar"></span>
+                                    </span>
+                                     <div class="progress-value">90%</div>
+                                </div>*/}
+                                <div style={{ width: 150 }}>
+                                {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)>=examinfo.exam_info.pass_percentage
+                                ?
+                                <>
+                                    <CircularProgressbar 
+                                           
+                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)}%`} 
+                                        styles={{ 
+                                            text: {
+                                              fill: '#1089ff',
+                                              fontSize: '16px',
+                                            },
+                                            background: {
+                                              fill: '#1089ff',
+                                            },
+                                            path: {
+      
+                                                  stroke: `#1089ff`,
+                                            },
+                                        }}
+                                     />
+                                     <h4 style={{color: "#1089ff",marginTop: '10%'}} >Pass </h4>
+                                     <p>Pass Mark: {examinfo.exam_info.pass_percentage}%</p>
+                                    {/*<div className="students-info-intro-end justify-content-center mt-3">
+                                        <div className="enrolled-courses">
+                                            <a className='btn btn-primary text-white' href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`}>Download Certificate</a>
+                                        </div>
+                                    </div>*/}
 
-                                    
+                                    </>:
+                                    <>
+                                      <CircularProgressbar 
+                                            
+                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer  }).length/examinfo.exam_question_answer_data.length*100)}%`} 
+                                        styles={{ 
+                                            text: {
+                                              fill: '#ff5151',
+                                              fontSize: '16px',
+                                            },
+                                            background: {
+                                              fill: '#ff5151',
+                                            },
+                                            path: {
+      
+                                                  stroke: `#ff5151`,
+                                            },
+                                        }}
+                                     />
+                                         <h4 style={{color: "#ff5151",marginTop: '10%'}}>Fail </h4>
+                                         <p>Pass Mark: {examinfo.exam_info.pass_percentage}%</p>
+                                        
+                                    </>}
                                 </div>
-                            </div>
+                                <div className="students-info-intro-end justify-content-evenly mt-3">
+                                    <a  href={`/certificate?id=${examinfo.student_exam_code}`} target={'_blank'} rel="noreferrer" >View Certificate <img src="https://img.icons8.com/material-outlined/20/0d6ecc/visible--v1.png"/></a>
+                                    <a  href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`} download >Download Certificate <img src="https://img.icons8.com/pastel-glyph/20/0d6ecc/download--v1.png"/></a>
+
+                                </div>
+                            </center>
                         </div>
                     </div>
                     <br/>
@@ -104,35 +154,35 @@ export const Result = (props) => {
             </div>
 
             <div className="container">
-                <div className="students-info-intro">
+                <div className="">
                     <div className="">
-                        
+                        <h4 className="mb-3"><u>Questions</u></h4>
 
                         {examinfo.exam_question_answer_data.map((data,key)=>{
+
                             return(
-                                <div className='qbox' key={key}>
-                                    <h5>{key+1}- {data.question}</h5>
+                                <div className={`qbox students-info-intro p-3 ${data.answer_user===data.answer && data.answer_user!==undefined?'corrent-results':''} ${data.answer_user!==data.answer && data.answer_user!==undefined?'wrong-results':''} ` } key={key}>
+                                    <h5>{key+1}/{examinfo.exam_question_answer_data.length} - {data.question}</h5>
                                     {data.options.map((optn,okey)=>{
 
                                         if(data.answer_user===undefined){
                                             return(
-                                                <p key={okey}>{okey+1}. <span>{optn}</span></p>
+                                                <p key={okey}> <span  className={`bg-trans`} >{okey+1}. {optn}</span></p>
                                             )
                                         }else{
 
                                             if(data.answer_user===data.answer){
                                                 return(
-                                                    <p key={okey}>{okey+1}. <span className={okey+1===data.answer_user?`bg-correct`:``}>{optn}</span>  {okey+1===data.answer_user?<span className='textcorrect'>+1 Point</span>:``}</p>
+                                                    <p  key={okey}> <span className={okey+1===data.answer_user?`bg-correct`:``} >{okey+1}. {optn}  </span>  {okey+1===data.answer_user?<span className='textcorrect'>&nbsp;+1 Mark</span>:``}</p>
                                                 )
                                             }else{
                                                 return(
-                                                    <p key={okey}>{okey+1}. <span className={okey+1===data.answer_user?`bg-wrong`:``}>{optn}</span></p>
+                                                    <p  key={okey}> <span className={okey+1===data.answer_user?`bg-wrong`:``}>{okey+1}. {optn}</span> </p>
                                                 )
                                             }
                                         }
                                     })}
-                                    <h6>Ans: {data.options[data.answer-1]}</h6>
-                                    
+                                    {data.answer_user===undefined?<p className="text-end"> <span className="bg-wrong"> Not Attempted</span> </p>:``}
                                     
                                 </div>
                             )
@@ -146,7 +196,6 @@ export const Result = (props) => {
                             <p>4- Peter</p>
                             <h6 className='textcorrect'>Score- +1</h6>
                         </div>
-
                         <div className='qbox'>
                             <h5>1- What is your name?</h5>
                             <p>1- John</p>
@@ -154,9 +203,7 @@ export const Result = (props) => {
                             <p>3- Sam</p>
                             <p>4- Peter</p>
                             <h6 className='textwrong'>Score- 0</h6>
-
                         </div>
-
                         <div className='qbox'>
                             <h5>1- What is your name?</h5>
                             <p>1- John</p>
@@ -164,7 +211,6 @@ export const Result = (props) => {
                             <p>3- Sam</p>
                             <p>4- Peter</p>
                             <h6 className='textwrong'>Score- 0</h6>
-
                         </div> */}
 
 
@@ -177,7 +223,7 @@ export const Result = (props) => {
 
 
 
-    </Body>
+    </QuizBody>
   )
 }
 

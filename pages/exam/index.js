@@ -3,14 +3,13 @@ import Router from "next/router";
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import Auth from "../Auth";
-import Body from "../components/Body";
+import QuizBody from "../components/QuizBody";
 import cookie from 'react-cookies';
 import _, { each } from 'lodash'
-import moment from 'moment'
 import Countdown from 'react-countdown';
 import ExamTimeOut from "../components/exam/ExamTimeOut";
 
-export class Exam extends Component {
+export class index extends Component {
 
  constructor(props){
      super(props)
@@ -20,13 +19,11 @@ export class Exam extends Component {
         exam_question_answer_data:null,
         showQuestion:1,
         exam_timer:0,
-        exam_start:false,
+        exam_start:true,
         exam_timeout:false,
         exam_score:0
      }
  }
-
-
  componentDidMount(){
      axios.post(`${process.env.backendURL}/exam/latestexam`)
      .then(response=>{
@@ -48,6 +45,12 @@ export class Exam extends Component {
                 if(response1.data.datas.exam_timeout){
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
                 }else{
+
+                     let questions=response1.data.datas.exam_question_answer_data;
+                    questions.map((question,index) =>{
+                            question.marked_for_review==undefined?question.marked_for_review=false:true; 
+                            question.skipped==undefined?question.skipped=false:true; 
+                     })
                     this.setState({
                         loadingPage:false,
                         exam_info:response1.data.datas.exam_info,
@@ -67,6 +70,7 @@ export class Exam extends Component {
          
      })
  }
+
 
 
  startExam=()=>{
@@ -100,7 +104,7 @@ export class Exam extends Component {
 
     var datas=this.state.exam_question_answer_data;
     datas[this.state.showQuestion-1].answer_user=keys+1;
-
+    datas[this.state.showQuestion-1].skipped=false;
     this.setState({
         exam_question_answer_data:datas
     })
@@ -123,17 +127,73 @@ export class Exam extends Component {
     
 
  }
+ unReviewCurrentQuestion=()=>{
+
+    var datas=this.state.exam_question_answer_data;
+    datas[this.state.showQuestion-1].marked_for_review=false;
+
+    this.setState({
+        exam_question_answer_data:datas
+    })
+
+     var temp_data={
+        exam_id:this.state.exam_info._id,
+        user_id:cookie.load('qtonix_quiz_userdata')._id,
+        exam_question_answer_data:datas,
+    }
+
+
+    //update data on checkbox click
+    axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+    .then(response=>{
+        console.log('success')
+    })
+    
+
+ }
+  reviewCurrentQuestion=()=>{
+
+    var datas=this.state.exam_question_answer_data;
+    datas[this.state.showQuestion-1].marked_for_review=true;
+
+    this.setState({
+        exam_question_answer_data:datas
+    })
+     var temp_data={
+        exam_id:this.state.exam_info._id,
+        user_id:cookie.load('qtonix_quiz_userdata')._id,
+        exam_question_answer_data:datas,
+    }
+
+
+    //update data on checkbox click
+    axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+    .then(response=>{
+        console.log('success')
+    })
+    
+
+ }
 
 
     // Renderer callback with condition
     renderer = ({ hours, minutes, seconds, completed }) => {
-        if (completed) {
         
-           return <ExamTimeOut />;
+        if (completed) {
+            return <ExamTimeOut />;
+           
 
         } else {
         // Render a countdown
-        return <span>{hours}:{minutes}:{seconds}</span>;
+
+         let digit1hours=Math.floor(hours / 10);
+            let digit2hours=hours % 10;
+            let digit1minutes=Math.floor(minutes / 10);
+            let digit2minutes=minutes % 10;
+            let digit1seconds=Math.floor(seconds / 10);
+            let digit2seconds=seconds % 10;
+            return <span > Time Remaining <p className="timer_digit">  <span>{digit1hours}</span> <span>{digit2hours}</span> : <span>{digit1minutes}</span> <span>{digit2minutes}</span> : <span>{digit1seconds}</span> <span>{digit2seconds}</span> </p> </span>;
+        //return <span>{hours}:{minutes}:{seconds}</span>;
         }
     };
 
@@ -146,7 +206,8 @@ export class Exam extends Component {
         }
         axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
         .then(response=>{
-            this.setState({
+        
+         this.setState({
                 exam_timeout:true
             })
         })
@@ -162,6 +223,7 @@ export class Exam extends Component {
             }
             axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
             .then(response=>{
+              
                 this.setState({
                     exam_timeout:true
                 })
@@ -169,7 +231,31 @@ export class Exam extends Component {
         }
     }
 
+    handleSkipQuestion=()=>{
 
+         var datas=this.state.exam_question_answer_data;
+        datas[this.state.showQuestion-1].skipped=true;
+
+        this.setState({
+            exam_question_answer_data:datas,
+            showQuestion:this.state.showQuestion+1
+        })
+
+         var temp_data={
+                exam_id:this.state.exam_info._id,
+                user_id:cookie.load('qtonix_quiz_userdata')._id,
+                exam_question_answer_data:datas,
+            }
+
+
+            //update data on checkbox click
+            axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+            .then(response=>{
+                console.log('success')
+            })
+
+        
+    }
     handleSubmitExam=()=>{
 
         var score=0;
@@ -198,11 +284,9 @@ export class Exam extends Component {
             exam_id:this.state.exam_info._id,
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_finished:true,
-            exam_timeout:true,
-            exam_score:score,
-            exam_end_datetime:moment().format()
+            exam_score:score
         }
-        axios.post(`${process.env.backendURL}/exam/submit_exam`,temp_data)
+        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
         .then(response=>{
             this.setState({
                 exam_timeout:true
@@ -216,7 +300,7 @@ export class Exam extends Component {
 
   render() {
     return (
-      <Body>
+      <QuizBody>
         <Auth>
         {/* <div className="py-0 mt-5">
             <div className="container">
@@ -257,7 +341,7 @@ export class Exam extends Component {
                         </>
                         :
                         <>
-                        <div className="col-md-12">
+                        <div className="col-md-4 offset-md-8 mb-2">
                             <center>
                                 {/* <Countdown date={Number(this.state.exam_start_time) + 60*60*1000}>
                                     <p>Completed</p>
@@ -280,18 +364,20 @@ export class Exam extends Component {
                             </center>
                         </div>
                         <div className="col-md-8">
+                            <div className="heading-container">
+                                    <h5 className="p-3"> <p style={{fontSize:'14px',marginBottom:'10px'}}>Q {this.state.showQuestion}/{this.state.exam_question_answer_data.length}</p>{this.state.exam_question_answer_data[this.state.showQuestion-1].question}</h5>    
+                                </div>
                             <div className="students-info-intro m2">
                                 
-                                <h5>{this.state.showQuestion}- {this.state.exam_question_answer_data[this.state.showQuestion-1].question}</h5>
+                                
                                 <br/>
                                 {this.state.exam_question_answer_data[this.state.showQuestion-1].options.map((optn,keys)=>{
                                     return(
-                                        <div style={{marginTop:'10px',marginLeft:'20px'}} key={keys} onClick={()=>this.handleCheckClick(optn,keys)}>
-                                            <input type="radio" 
-                                                
-                                                checked={this.state.exam_question_answer_data[this.state.showQuestion-1].answer_user===keys+1?true:false}
-                                            />&nbsp;&nbsp;
-                                            <label>{optn}</label>
+                                         <div className="form-check p-3 ps-5" style={{marginTop:'10px',marginLeft:'20px',backgroundColor: this.state.exam_question_answer_data[this.state.showQuestion-1].answer_user===keys+1?'#d2e9ff':'#f8f8f8'}} key={keys} onClick={()=>this.handleCheckClick(optn,keys)}>
+                                           <input className="form-check-input cursor-pointer" type="radio" checked={this.state.exam_question_answer_data[this.state.showQuestion-1].answer_user===keys+1?true:false} onChange={()=>true}/>
+                                           <label className="form-check-label cursor-pointer" htmlFor={this.state.exam_question_answer_data[this.state.showQuestion-1]._id+'_'+keys}>
+                                           {optn}
+                                           </label>
                                         </div>
                                     )
                                 })}
@@ -300,52 +386,83 @@ export class Exam extends Component {
 
                                 <br/>
                                 <br/>
-                                <center>{this.state.showQuestion}/{this.state.exam_question_answer_data.length}</center>
+                                
                                 <br/>
+                                <div className=" row">
+                                <div className="col-4">
                                 {this.state.showQuestion===1
                                 ?<></>
                                 :
                                 <button className="btn btn-primary text-white" onClick={()=>this.setState({showQuestion:this.state.showQuestion-1})}>Prev</button>
                                 }
+                                </div>
+                                <div className="col-4 text-center">
                                 
                                 
+                                <>
+                                    {
+                                        this.state.exam_question_answer_data[this.state.showQuestion-1].marked_for_review===false?
+                                          <button className="btn btn-primary text-white" onClick={()=>this.reviewCurrentQuestion()}> Mark for Review</button>
+                                         :<button className="btn btn-primary text-white" onClick={()=>this.unReviewCurrentQuestion()}> Remove review mark</button>
+                                    }
+                                    </>
 
+                                 </div>
+                                
+                                <div className="col-4">
                                 {this.state.showQuestion===this.state.exam_question_answer_data.length
                                 ?
-                                <></>
-                                :<button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.setState({showQuestion:this.state.showQuestion+1})}>Next</button>
+                                <><button className="btn btn-primary text-white"  style={{float:'right'}} onClick={()=>this.handleSubmitExam()}>Submit</button></>
+                                :  <>
+                                    {
+                                        this.state.exam_question_answer_data[this.state.showQuestion-1].answer_user===undefined?
+                                       <button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.handleSkipQuestion()}>Skip</button>
+                                     :<button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.setState({showQuestion:this.state.showQuestion+1})}>Next</button>
+                                    }
+                                    </>
                                 }
+                                 </div>
+                                </div>
                                 
                             
 
                             </div>
                         </div>
                         <div className="col-md-4">
-                            <div className="students-info-intro m2">
-                                {this.state.exam_question_answer_data.map((exd,key)=>{
+                            <div className="question-index-container">
+                                    <h5 className="p-3">Questions</h5>  
+                                </div>
+                            <div className="students-info-intro m2 students-info-heading">
+                                <div className=" question-info-intro pt-1">
+                                    {this.state.exam_question_answer_data.map((exd,key)=>{
 
-                                    if(exd.answer_user===undefined){
-                                        return(
+                                        if(exd.answer_user===undefined && exd.skipped==false){
+                                            return(
+                                            
+                                               <p key={key} className={`${exd.answer_user===undefined?'test_11':'test_11a'} ${key===this.state.showQuestion-1?'current-question':''} ${exd.skipped===true?'skipped-question':''} ${exd.marked_for_review===true?'review-question':''} `}>{key+1}</p>
+                                            )
+                                        }else{
+                                            return(
+                                            
+                                                <p key={key} className={`${exd.answer_user===undefined?'test_11':'test_11a'}  ${key===this.state.showQuestion-1?'current-question':''} ${exd.skipped===true?'skipped-question':''}  ${exd.marked_for_review===true?'review-question':''} `} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
+                                            )
+                                        }
                                         
-                                            <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`}>{key+1}</p>
-                                        )
-                                    }else{
-                                        return(
-                                        
-                                            <p key={key} className={exd.answer_user===undefined?`test_11`:`test_11a`} style={{cursor:'pointer'}} onClick={()=>this.setState({showQuestion:key+1})}>{key+1}</p>
-                                        )
-                                    }
-                                    
-                                })}
-
+                                    })}
+                                </div>
+                                <hr/>
+                                {/*<p>Total: {this.state.exam_question_answer_data.length}</p>
+                                <p>Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>*/}
+                                <p className="test_12">Unanswered Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
                                 <br/>
-                                <br/>
-                                <br/>
-                                <p>Total: {this.state.exam_question_answer_data.length}</p>
-                                <p>Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
-                                <p>Unanswerrd: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
-                                <br/>
-                                <button className="btn btn-primary text-white" onClick={()=>this.handleSubmitExam()}>Submit Exam</button>
+                                <div className="font-13 question-legend row">
+                                    <p className="col-6"><span id="not-answered-element" className="me-1"></span> Not Answered </p>
+                                    <p className="col-6"><span id="answered-element" className="me-1"></span> Answered </p>
+                                    <p className="col-6"><span id="answered-review-element" className="me-1"></span> Marked for Review </p>
+                                    <p className="col-6"><span id="skipped-element" className="me-1"></span> Skipped Question </p>
+                                    <p className="col-6"><span id="current-element" className="me-1"></span> Current Question </p>
+                                </div>
+                                <button className="btn btn-primary text-white mt-2 w-100"  onClick={()=>this.handleSubmitExam()}>Submit</button>
                             </div>
                         </div>
                         </>
@@ -354,15 +471,7 @@ export class Exam extends Component {
                     </>
                     :
                     <>
-                        
-
-                        <br />
-                            <br />
                         <center>
-                            <h3>{this.state.exam_info.name}</h3>
-                            <p>{this.state.exam_info.duration} minutes</p>
-                            <br />
-
                             <button className="btn btn-primary text-white" onClick={()=>this.startExam()}>Start Exam</button>
                         </center>
                     </>
@@ -376,7 +485,7 @@ export class Exam extends Component {
         }
         
         </Auth>
-      </Body>
+      </QuizBody>
     );
   }
 }
@@ -385,4 +494,4 @@ const mapStateToProps = (state) => ({});
 
 const mapDispatchToProps = {};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Exam);
+export default connect(mapStateToProps, mapDispatchToProps)(index);
