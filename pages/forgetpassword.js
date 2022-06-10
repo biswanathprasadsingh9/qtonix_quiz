@@ -8,7 +8,7 @@ import { useRouter } from 'next/router';
 import cookie from 'react-cookies';
 import Link from 'next/link';
 
-export const Login = (props) => {
+export const Forgetpassword = (props) => {
     const router = useRouter()
 
     const simpleValidator = useRef(new SimpleReactValidator());
@@ -16,7 +16,6 @@ export const Login = (props) => {
     const [loading, setLoading] = useState(false);
     const [data, setData] = useState({
         email:'',
-        password:'',
     });
 
     function handleChange(e){
@@ -37,14 +36,14 @@ export const Login = (props) => {
 
         } else {
             setLoading(true)
-            axios.post(`${process.env.backendURL}/user/login`,data)
+            axios.post(`${process.env.backendURL}/user/forgetpassword`,data)
                 .then(response=>{
                     setLoading(false)
                     if(response.data.response){
 
                         console.log(response.data)
 
-                        toast.success('Login Success', {
+                        toast.success('Please check your email inbox', {
                             position: "top-right",
                             autoClose: 5000,
                             hideProgressBar: false,
@@ -54,19 +53,11 @@ export const Login = (props) => {
                             progress: undefined,
                         });
 
-                        cookie.remove('qtonix_quiz_userdata', { path: '/' })
-                        cookie.remove('qtonix_quiz_userid', { path: '/' })
-    
-                        var expires = new Date();
-                        expires.setSeconds(21600);
-                        cookie.save('qtonix_quiz_userdata', response.data.data, { path: '/',expires });
-                        cookie.save('qtonix_quiz_userid', response.data.data._id, { path: '/',expires });
-
-                        router.push(`/dashboard`)
+                        router.push(`/login`)
 
     
                     }else{
-                        toast.error('Wrong credentials', {
+                        toast.error('This email is not registrated', {
                             position: "top-right",
                             autoClose: 5000,
                             hideProgressBar: false,
@@ -90,7 +81,7 @@ export const Login = (props) => {
             <div className="row align-items-center">
             <div className="col-xl-5 order-2 order-xl-0">
                 <div className="signup-area-textwrapper">
-                <h2 className="font-title--md mb-0">Login</h2>
+                <h2 className="font-title--md mb-0">Forget Passowrd</h2>
                 <p className="mt-2 mb-lg-4 mb-3">Don&apos;t have account? <Link href={'/register'}><a className="text-black-50">Register</a></Link></p>
                 <form onSubmit={handleSubmit}>
                     
@@ -105,24 +96,12 @@ export const Login = (props) => {
                         {simpleValidator.current.message('email', data.email, 'required|email', { className: 'text-danger' })}
                     </div>
 
-
-                    <div className="form-element">
-                        <div className="form-alert">
-                            <label>Password</label>
-                            <Link href={'/forgetpassword'}><a className="text-primary fs-6">Forget Password</a></Link>
-                        </div>
-                        <div className="form-alert-input">
-                            <input type="password" placeholder="Your Password" name='password' value={data.password} onChange={handleChange} />
-                        </div>
-                        {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
-
-                    </div>
                     
                     
                     <div className="form-element">
                         {loading
                         ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                        :<button type="submit" className="button button-lg button--primary w-100">Login</button>
+                        :<button type="submit" className="button button-lg button--primary w-100">Reset Password</button>
                         }
                     </div>
                     
@@ -149,4 +128,4 @@ const mapStateToProps = (state) => ({})
 
 const mapDispatchToProps = {}
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login)
+export default connect(mapStateToProps, mapDispatchToProps)(Forgetpassword)

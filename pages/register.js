@@ -6,6 +6,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import ClientCaptcha from "react-client-captcha";
+import Link from 'next/link';
 
 export const Register = (props) => {
     const router = useRouter()
@@ -122,7 +123,7 @@ export const Register = (props) => {
                     <br />
 
                 <h2 className="font-title--md mb-0">Register</h2>
-                <p className="mt-2 mb-lg-4 mb-3">Don&apos;t have account? <a href="signup.html" className="text-black-50">Sign up</a></p>
+                <p className="mt-2 mb-lg-4 mb-3">Already have account? <Link href={'/login'}><a className="text-black-50">Login</a></Link></p>
                 <form onSubmit={handleSubmit}>
                     
                     <div className="form-element">

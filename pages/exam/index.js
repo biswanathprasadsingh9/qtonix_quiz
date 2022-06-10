@@ -6,6 +6,7 @@ import Auth from "../Auth";
 import Body from "../components/Body";
 import cookie from 'react-cookies';
 import _, { each } from 'lodash'
+import moment from 'moment'
 import Countdown from 'react-countdown';
 import ExamTimeOut from "../components/exam/ExamTimeOut";
 
@@ -198,7 +199,8 @@ export class Exam extends Component {
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_finished:true,
             exam_timeout:true,
-            exam_score:score
+            exam_score:score,
+            exam_end_datetime:moment().format()
         }
         axios.post(`${process.env.backendURL}/exam/submit_exam`,temp_data)
         .then(response=>{

@@ -64,6 +64,7 @@ export const Account = (props) => {
                 exam_question_answer_data:response.data.questions,
                 exam_start:true,
                 exam_start_time:Date.now(),
+                exam_start_datetime:moment().format()
             }
 
             //create exam under user
@@ -88,112 +89,115 @@ export const Account = (props) => {
 
     }
 
+
+
+
   return (
     <Body>
 
-<Auth>
-  {/* Breadcrumb Starts Here */}
-  <div className="py-0 mt-5">
-    <div className="container">
-      <h3>Dashboard</h3>
-    </div>
-  </div>
- 
- {userinfo===undefined || loadingPage===true
- ?
- <center>
-   <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
- </center>
- :
-  <section className="section students-info">
-    <div className="container">
-      <div className="students-info-intro">
-        {/* profile Details   */}
-        <div className="students-info-intro__profile">
-          <div>
-            <div className="students-info-intro-start">
-              <div className="image">
-                <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Student" />
-              </div>
-              <div className="text">
-                <h5>{userinfo.name}</h5>
-                <p>{userinfo.email}</p>
-              </div>
-            </div>
+      <Auth>
+        {/* Breadcrumb Starts Here */}
+        <div className="py-0 mt-5">
+          <div className="container">
+            <h3>Dashboard</h3>
           </div>
-          <div>
-            {examfound
-            ?
-            <div className="students-info-intro-end">
-              <div className="enrolled-courses">
-                {/* <div className="enrolled-courses-icon">
-                  <svg width={28} height={26} viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M1 1.625H8.8C10.1791 1.625 11.5018 2.15764 12.477 3.10574C13.4521 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 13.5891 22.405 12.8577 21.6939C12.1263 20.9828 11.1343 20.5833 10.1 20.5833H1V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                    <path d="M27 1.625H19.2C17.8209 1.625 16.4982 2.15764 15.523 3.10574C14.5479 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 14.4109 22.405 15.1423 21.6939C15.8737 20.9828 16.8657 20.5833 17.9 20.5833H27V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </div> */}
+        </div>
+      
+      {userinfo===undefined || loadingPage===true
+      ?
+      <center>
+        <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
+      </center>
+      :
+        <section className="section students-info">
+          <div className="container">
+            <div className="students-info-intro">
+              {/* profile Details   */}
+              <div className="students-info-intro__profile">
+                <div>
+                  <div className="students-info-intro-start">
+                    <div className="image">
+                      <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Student" />
+                    </div>
+                    <div className="text">
+                      <h5>{userinfo.name}</h5>
+                      <p>{userinfo.email}</p>
+                    </div>
+                  </div>
+                </div>
+                <div>
+                  {examfound
+                  ?
+                  <div className="students-info-intro-end">
+                    <div className="enrolled-courses">
+                      {/* <div className="enrolled-courses-icon">
+                        <svg width={28} height={26} viewBox="0 0 28 26" fill="none" xmlns="http://www.w3.org/2000/svg">
+                          <path d="M1 1.625H8.8C10.1791 1.625 11.5018 2.15764 12.477 3.10574C13.4521 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 13.5891 22.405 12.8577 21.6939C12.1263 20.9828 11.1343 20.5833 10.1 20.5833H1V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                          <path d="M27 1.625H19.2C17.8209 1.625 16.4982 2.15764 15.523 3.10574C14.5479 4.05384 14 5.33974 14 6.68056V24.375C14 23.3694 14.4109 22.405 15.1423 21.6939C15.8737 20.9828 16.8657 20.5833 17.9 20.5833H27V1.625Z" stroke="#1089FF" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </div> */}
 
-                <div className="enrolled-courses-text">
-                  {/* <p className="fs-6 mt-1"><Link href={'/exam'}>Go to exam</Link></p> */}
+                      <div className="enrolled-courses-text">
+                        {/* <p className="fs-6 mt-1"><Link href={'/exam'}>Go to exam</Link></p> */}
 
-                  <p>Name: {examinfo.name}</p>
-                  <p>Duration: {examinfo.duration}</p>
+                        <p>Name: {examinfo.name}</p>
+                        <p>Duration: {examinfo.duration}</p>
 
 
-                  <button className='btn btn-primary text-white' onClick={startExam}>Start Exam</button>
+                        <button className='btn btn-primary text-white' onClick={startExam}>Start Exam</button>
+
+                      </div>
+
+                      
+
+
+                    </div>
+                  </div>
+                  :
+                  <div className="students-info-intro-end">
+                    <div className="enrolled-courses">
+                      <h3>No exam found</h3>
+                    </div>
+                  </div>
+                  }
+                  
+                </div>
+              </div>
+              {/* Nav  */}
+              <br/>
+              <br/>
+
+            </div>
+            
+          <br/>
+          </div>
+
+
+          <div className="modal" style={{display:showHideModal?'block':'none'}}>
+            <div className="modal-dialog">
+              <div className="modal-content">
+                
+                <div className="modal-body">
+                  <br />
+
+                  <p>Exam start time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
+                  <p>Exam end time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
+
+
+                  <br />
+
+                  <button type="button" className="btn btn-secondary float-end" data-bs-dismiss="modal" onClick={()=>setSshowHideModal(false)}>Close</button>
 
                 </div>
-
-                
-
-
               </div>
             </div>
-            :
-            <div className="students-info-intro-end">
-              <div className="enrolled-courses">
-                <h3>No exam found</h3>
-              </div>
-            </div>
-            }
-            
           </div>
-        </div>
-        {/* Nav  */}
-        <br/>
-        <br/>
-
-      </div>
-      
-     <br/>
-    </div>
-
-
-    <div className="modal" style={{display:showHideModal?'block':'none'}}>
-      <div className="modal-dialog">
-        <div className="modal-content">
-          
-          <div className="modal-body">
-            <br />
-
-            <p>Exam start time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
-            <p>Exam end time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
-
-
-            <br />
-
-            <button type="button" className="btn btn-secondary float-end" data-bs-dismiss="modal" onClick={()=>setSshowHideModal(false)}>Close</button>
-
-          </div>
-        </div>
-      </div>
-    </div>
 
 
 
-  </section>
-  }
-</Auth>
+        </section>
+        }
+      </Auth>
 
 
 
