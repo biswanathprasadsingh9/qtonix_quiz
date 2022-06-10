@@ -91,6 +91,9 @@ export const Result = (props) => {
                             <div className="students-info-intro-end">
                                 <div className="enrolled-courses">
                                     <a className='btn btn-primary text-white' href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`}>Download Certificate</a>
+                                    <a className='btn btn-primary text-white' href={`/certificate?id=${examinfo.student_exam_code}`} target={'_blank'}>View Certificate</a>
+
+                                    
                                 </div>
                             </div>
                         </div>
