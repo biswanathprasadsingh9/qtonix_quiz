@@ -86,13 +86,13 @@ export const Result = (props) => {
                                      <div class="progress-value">90%</div>
                                 </div>*/}
                                 <div style={{ width: 150 }}>
-                                {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)>=examinfo.exam_info.pass_percentage
+                                {Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)>=examinfo.exam_info.pass_percentage
                                 ?
                                 <>
                                     <CircularProgressbar 
                                            
-                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)} 
-                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length/examinfo.exam_question_answer_data.length*100)}%`} 
+                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)}%`} 
                                         styles={{ 
                                             text: {
                                               fill: '#1089ff',
@@ -119,8 +119,8 @@ export const Result = (props) => {
                                     <>
                                       <CircularProgressbar 
                                             
-                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)} 
-                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user===o.answer  }).length/examinfo.exam_question_answer_data.length*100)}%`} 
+                                        value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)}%`} 
                                         styles={{ 
                                             text: {
                                               fill: '#ff5151',
