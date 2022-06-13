@@ -9,7 +9,7 @@ import moment from 'moment'
 import { useRouter } from 'next/router';
 import Moment from 'react-moment';
 import TableDashboard from './components/TableDashboard';
-
+import { Check, Edit3, Eye, X } from 'react-feather';
 
 export const Account = (props) => {
   const router = useRouter()
@@ -124,7 +124,7 @@ export const Account = (props) => {
                     </div>
                     <div className="text">
                       <h5>{userinfo.name}</h5>
-                      <p>{userinfo.email}</p>
+                      {/* <p>{userinfo.email}</p> */}
                     </div>
                   </div>
                 </div>
@@ -142,24 +142,30 @@ export const Account = (props) => {
 
                       <div className="enrolled-courses-text">
                         {/* <p className="fs-6 mt-1"><Link href={'/exam'}>Go to exam</Link></p> */}
+                        <div className='dashboardbox112'>
+                          <p>Name: {examinfo.name}</p>
+                          <p>Duration: {examinfo.duration} min</p>
+                          <p>Total Questions: {examinfo.qsn_ans.length}</p>
+                          <p>Pass: {examinfo.pass_percentage} %</p>
 
-                        <p>Name: {examinfo.name}</p>
-                        <p>Duration: {examinfo.duration}</p>
+
+                          <br />
+                        </div>
 
                         {userexaminfo
                         ?
                           userexaminfo.exam_score===undefined
                           ?
-                          <button className='btn btn-primary text-white mt-3' onClick={startExam}>Continue Exam</button>
+                          <button className='btn btn-primary text-white mt-3' onClick={startExam}><Edit3  size={18} /> Continue Exam</button>
                           :
                           <>
                               <Link href={`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${userexaminfo.exam_id}&u=${userexaminfo.user_id}`}>
-                                        <a className='btn btn-primary btn-sm text-white'>View Result</a>
+                                        <a className='btn btn-primary btn-sm text-white'><Eye size={18} /> View Result</a>
                                     </Link>
                           </>
 
                         :
-                        <button className='btn btn-primary text-white mt-3' onClick={startExam}>Start Exam</button>
+                        <button className='btn btn-primary text-white mt-3' onClick={startExam}><Check size={18} /> Start Exam</button>
                         }
 
                       </div>
@@ -197,19 +203,25 @@ export const Account = (props) => {
           <div className="modal" style={{display:showHideModal?'block':'none'}}>
             <div className="modal-dialog">
               <div className="modal-content">
-                
+                {examinfo!==null
+                ?
                 <div className="modal-body">
                   <br />
-
-                  <p>Exam start time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
-                  <p>Exam end time: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
+                  <h3>You can not start the exam.</h3>
+                  <br/>
+                  <p><b>Exam start time:</b> <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
+                  <p><b>Exam end time:</b> <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
 
 
                   <br />
 
-                  <button type="button" className="btn btn-secondary float-end" data-bs-dismiss="modal" onClick={()=>setSshowHideModal(false)}>Close</button>
+                  <button type="button" className="btn btn-danger float-end text-white" data-bs-dismiss="modal" onClick={()=>setSshowHideModal(false)}><X size={16} /> Close</button>
 
                 </div>
+                :
+                <></>
+                }
+                
               </div>
             </div>
           </div>

@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import ClientCaptcha from "react-client-captcha";
 import Link from 'next/link';
+import { Eye, EyeOff, UserPlus } from 'react-feather';
 
 export const Register = (props) => {
     const router = useRouter()
@@ -15,6 +16,11 @@ export const Register = (props) => {
     const [, forceUpdate] = useState();
     const [loading, setLoading] = useState(false);
     const [captcha, setCaptcha] = useState(111);
+
+    const [eyePassword, setEyePassword] = useState(false);
+    const [reyePassword, setReyePassword] = useState(false);
+
+
 
     const [data, setData] = useState({
         name:'',
@@ -153,8 +159,8 @@ export const Register = (props) => {
                             <label>Phone Number</label>
                         </div>
                         <div className="form-alert-input">
-                            <input type="text" placeholder="Your Phone Number" name='phone' value={data.phone} onChange={handleChange} />
-                            <span className='small'>Ex. (508) 555-1234 or 5085551234</span>
+                            <input type="text" placeholder="Ex. (508) 555-1234 or 5085551234" name='phone' value={data.phone} onChange={handleChange} />
+                            
                         </div>
                         {simpleValidator.current.message('phone', data.phone, 'required|phone', { className: 'text-danger' })}
                     </div>
@@ -165,14 +171,35 @@ export const Register = (props) => {
                             <label>Password</label>
                         </div>
                         <div className="form-alert-input">
-                            <input type="password" placeholder="Password" name='password' value={data.password} onChange={handleChange} />
+                            <input type={eyePassword?`text`:`password`} placeholder="Password" name='password' value={data.password} onChange={handleChange} />
+                            {eyePassword
+                            ?
+                            <div className="form-alert-icon cursor-pointer">
+                                <EyeOff onClick={()=>setEyePassword(false)} />
+                            </div>
+                            :
+                            <div className="form-alert-icon cursor-pointer">
+                                <Eye onClick={()=>setEyePassword(true)} />
+                            </div>
+                            }
                         </div>
                         {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
 
                         <div className="form-alert-input mt-2">
-                            <input type="password" placeholder="Confirm Password" name='cpassword' value={data.cpassword} onChange={handleChange} />
+                        <input type={reyePassword?`text`:`password`} placeholder="Confirm Password" name='cpassword' value={data.cpassword} onChange={handleChange} />
+                        {reyePassword
+                            ?
+                            <div className="form-alert-icon cursor-pointer">
+                                <EyeOff onClick={()=>setReyePassword(false)} />
+                            </div>
+                            :
+                            <div className="form-alert-icon cursor-pointer">
+                                <Eye onClick={()=>setReyePassword(true)} />
+                            </div>
+                            }
                         </div>
-                        {simpleValidator.current.message('confirm password', data.cpassword, 'required|min:5|max:20', { className: 'text-danger' })}
+                        {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
+
                     </div>
 
                   
@@ -193,7 +220,7 @@ export const Register = (props) => {
                     <div className="form-element">
                         {loading
                         ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                        :<button type="submit" className="button button-lg button--primary w-100">Sign in</button>
+                        :<button type="submit" className="button button-lg button--primary w-100"><UserPlus size={16} /> Sign in</button>
                         }
                     </div>
                     

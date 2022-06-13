@@ -8,6 +8,7 @@ import Link from 'next/link';
 import SimpleReactValidator from "simple-react-validator";
 import { useRouter } from 'next/router';
 import { toast } from 'react-toastify';
+import { Loader, Save } from 'react-feather';
 
 
 export const Profile = (props) => {
@@ -232,8 +233,8 @@ export const Profile = (props) => {
                             </div>
                             <div className="form-element">
                                 {loading
-                                ?<button type="button" className="button button-lg button--primary w-100 btn-sm" disabled>Please wait...</button>
-                                :<button type="submit" className="button button-lg button--primary w-100 btn-sm">Update Account Information</button>
+                                ?<button type="button" className="button button-lg button--primary w-100 btn-sm" disabled><Loader size={18} /> Please wait...</button>
+                                :<button type="submit" className="button button-lg button--primary w-100 btn-sm"><Save size={18} /> Update Account Information</button>
                                 }
                             </div>
                         </form>
@@ -276,8 +277,8 @@ export const Profile = (props) => {
                             
                             <div className="form-element">
                                 {loading
-                                ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                                :<button type="submit" className="button button-lg button--primary w-100">Update Password</button>
+                                ?<button type="button" className="button button-lg button--primary w-100" disabled><Loader size={18} /> Please wait...</button>
+                                :<button type="submit" className="button button-lg button--primary w-100"><Save size={18} /> Update Password</button>
                                 }
                             </div>
                         </form>

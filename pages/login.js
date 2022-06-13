@@ -7,6 +7,7 @@ import { toast } from 'react-toastify';
 import { useRouter } from 'next/router';
 import cookie from 'react-cookies';
 import Link from 'next/link';
+import { LogIn, Eye, EyeOff, } from 'react-feather';
 
 export const Login = (props) => {
     const router = useRouter()
@@ -18,6 +19,8 @@ export const Login = (props) => {
         email:'',
         password:'',
     });
+    const [eyePassword, setEyePassword] = useState(false);
+
 
     function handleChange(e){
         setData({
@@ -112,7 +115,18 @@ export const Login = (props) => {
                             <Link href={'/forgetpassword'}><a className="text-primary fs-6">Forget Password</a></Link>
                         </div>
                         <div className="form-alert-input">
-                            <input type="password" placeholder="Your Password" name='password' value={data.password} onChange={handleChange} />
+                            <input type={eyePassword?`text`:`password`} placeholder="Your Password" name='password' value={data.password} onChange={handleChange} />
+                        
+                            {eyePassword
+                            ?
+                            <div className="form-alert-icon cursor-pointer">
+                                <EyeOff onClick={()=>setEyePassword(false)} />
+                            </div>
+                            :
+                            <div className="form-alert-icon cursor-pointer">
+                                <Eye onClick={()=>setEyePassword(true)} />
+                            </div>
+                            }
                         </div>
                         {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
 
@@ -122,7 +136,7 @@ export const Login = (props) => {
                     <div className="form-element">
                         {loading
                         ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                        :<button type="submit" className="button button-lg button--primary w-100">Login</button>
+                        :<button type="submit" className="button button-lg button--primary w-100"><LogIn size={16} /> Login</button>
                         }
                     </div>
                     

@@ -3,6 +3,8 @@ import React,{useState, useEffect} from 'react'
 import { connect } from 'react-redux'
 import Moment from 'react-moment';
 import Link from 'next/link';
+import _ from 'lodash'
+import { Download, Eye } from 'react-feather';
 
 
 export const TableDashboard = (props) => {
@@ -15,6 +17,7 @@ export const TableDashboard = (props) => {
             setDatas(response.data.datas)
         })
     },[])
+
 
 
   return (
@@ -60,21 +63,24 @@ export const TableDashboard = (props) => {
                         <tr key={key}>
                             <td>{data.exam_info.name}</td>
                             <td>{data.student_exam_code}</td>
-                            <td>{data.exam_score}</td>
-                            <td><Moment format="YYYY-MMMM-DD hh:mm:ss A">{data.exam_end_datetime}</Moment></td>
+                            <td>{Math.round(_.filter(data.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/data.exam_question_answer_data.length*100)} %</td>
+                            <td><Moment format="YYYY-MMMM-DD">{data.exam_end_datetime}</Moment></td>
                             <td>
                                 <center>
-                                    <a className='btn btn-primary btn-sm text-white' href={`${process.env.backendURLPDF}/${data.student_exam_code}.pdf`}>Download Certificate</a>
+                                    
                                 </center> 
                             </td>
                             <td> 
                                 <center>
                                     <Link href={`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${data.exam_id}&u=${data.user_id}`}>
-                                        <a className='btn btn-primary btn-sm text-white'>View Result</a>
+                                        <a className='btn btn-primary btn-sm text-white'><Eye size={16}  /> View Result</a>
                                     </Link>
 
                                     &nbsp;
-                                    <a  href={`/certificate?id=${data.student_exam_code}`} className='btn btn-primary btn-sm text-white' target={'_blank'} rel="noreferrer" >View Certificate <img src="https://img.icons8.com/material-outlined/20/0d6ecc/visible--v1.png"/></a>
+                                    <a  href={`/certificate?id=${data.student_exam_code}`} className='btn btn-primary btn-sm text-white' target={'_blank'} rel="noreferrer" ><Eye size={16} /> View Certificate</a>
+                                
+                                    &nbsp;
+                                    <a className='btn btn-primary btn-sm text-white' href={`${process.env.backendURLPDF}/${data.student_exam_code}.pdf`}><Download size={16}  /> Download Certificate</a>
                                 </center> 
                             </td>
                         </tr>
