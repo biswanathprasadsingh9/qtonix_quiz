@@ -188,30 +188,6 @@ export const Result = (props) => {
                             )
                         })}
 
-                        {/* <div className='qbox'>
-                            <h5>1- What is your name?</h5>
-                            <p>1- John</p>
-                            <p><span className='bg-correct'>2- Ron</span></p>
-                            <p>3- Sam</p>
-                            <p>4- Peter</p>
-                            <h6 className='textcorrect'>Score- +1</h6>
-                        </div>
-                        <div className='qbox'>
-                            <h5>1- What is your name?</h5>
-                            <p>1- John</p>
-                            <p><span className='bg-wrong'>2- Ron</span></p>
-                            <p>3- Sam</p>
-                            <p>4- Peter</p>
-                            <h6 className='textwrong'>Score- 0</h6>
-                        </div>
-                        <div className='qbox'>
-                            <h5>1- What is your name?</h5>
-                            <p>1- John</p>
-                            <p>2- Ron</p>
-                            <p>3- Sam</p>
-                            <p>4- Peter</p>
-                            <h6 className='textwrong'>Score- 0</h6>
-                        </div> */}
 
 
                     </div>

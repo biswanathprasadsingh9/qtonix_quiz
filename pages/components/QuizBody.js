@@ -296,8 +296,8 @@ export class QuizBody extends Component {
 
 {this.props.children}
 
-  <footer className="footer footer--two pt-0">
-    <div className="footer__bottom">
+  <footer className="footer footer--two pt-0 footer__inner">
+    <div className="footer__bottom footer__bottom__inner">
       <div className="container">
         <div className="footer__bottom-content">
           <div className="footer__bottom_copyright">
@@ -306,7 +306,7 @@ export class QuizBody extends Component {
           <div className="footer__bottom_topbutton row w-50">
            
               <div className="col-md-6 col-12">
-                <div className="footer__list">
+                <div className="footer__list mb-0">
                  
                   <ul>
                     <li><a href="term-condition">Term & Condition</a></li>
@@ -314,7 +314,7 @@ export class QuizBody extends Component {
                 </div>
               </div>
               <div className="col-md-6  col-12">
-                <div className="footer__list">
+                <div className="footer__list  mb-0">
                   
                   <ul>
                     <li><a href="privacy-policy">Privacy Policy</a></li>

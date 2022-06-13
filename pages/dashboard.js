@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import Auth from './Auth'
-import Body from './components/Body'
+import QuizBody from './components/QuizBody'
 import cookie from 'react-cookies';
 import axios from 'axios';
 import Link from 'next/link';
 import moment from 'moment'
 import { useRouter } from 'next/router';
 import Moment from 'react-moment';
+import TableDashboard from './components/TableDashboard';
 
 
 export const Account = (props) => {
@@ -17,7 +18,7 @@ export const Account = (props) => {
     const [examfound,setExamFound]=useState(false);
     const [userinfo,setUserInfo]=useState(cookie.load('qtonix_quiz_userdata'));
     const [examinfo,setUExaminfo]=useState(null);
-    const [questions,setQuestions]=useState(null);
+    const [userexaminfo,setUserExaminfo]=useState(null);
     const [showHideModal,setSshowHideModal]=useState(false);
 
 
@@ -25,13 +26,14 @@ export const Account = (props) => {
 
 
     useEffect(()=>{
-      axios.post(`${process.env.backendURL}/exam/latestexam`)
+      axios.post(`${process.env.backendURL}/exam/userdashboard`,{user_id:cookie.load('qtonix_quiz_userdata')._id})
      .then(response=>{
        console.log(response.data)
 
         if(response.data.examinfo){
           setUExaminfo(response.data.examinfo);
-          setQuestions(response.data.questions);
+          // setQuestions(response.data.questions);
+          setUserExaminfo(response.data.user_examinfo)
           setloadingPage(false);
           setExamFound(true);
         }else{
@@ -93,7 +95,7 @@ export const Account = (props) => {
 
 
   return (
-    <Body>
+    <QuizBody>
 
       <Auth>
         {/* Breadcrumb Starts Here */}
@@ -109,9 +111,10 @@ export const Account = (props) => {
         <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
       </center>
       :
+      <>
         <section className="section students-info">
           <div className="container">
-            <div className="students-info-intro">
+            <div className="students-info-intro p-5">
               {/* profile Details   */}
               <div className="students-info-intro__profile">
                 <div>
@@ -143,8 +146,21 @@ export const Account = (props) => {
                         <p>Name: {examinfo.name}</p>
                         <p>Duration: {examinfo.duration}</p>
 
+                        {userexaminfo
+                        ?
+                          userexaminfo.exam_score===undefined
+                          ?
+                          <button className='btn btn-primary text-white mt-3' onClick={startExam}>Continue Exam</button>
+                          :
+                          <>
+                              <Link href={`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${userexaminfo.exam_id}&u=${userexaminfo.user_id}`}>
+                                        <a className='btn btn-primary btn-sm text-white'>View Result</a>
+                                    </Link>
+                          </>
 
-                        <button className='btn btn-primary text-white' onClick={startExam}>Start Exam</button>
+                        :
+                        <button className='btn btn-primary text-white mt-3' onClick={startExam}>Start Exam</button>
+                        }
 
                       </div>
 
@@ -162,6 +178,11 @@ export const Account = (props) => {
                   }
                   
                 </div>
+
+                  
+
+
+
               </div>
               {/* Nav  */}
               <br/>
@@ -196,12 +217,27 @@ export const Account = (props) => {
 
 
         </section>
+       
+          <section className="section students-info" style={{marginTop:'-16rem'}}>
+          <div className="container">
+            <div className="students-info-intro p-4">
+        
+              <div className="students-info-intro__profile">
+              <TableDashboard user_id={userinfo._id} />
+
+              </div>
+            </div>
+          </div>
+          </section>
+
+        
+        </>
         }
       </Auth>
 
 
 
-    </Body>
+    </QuizBody>
   )
 }
 

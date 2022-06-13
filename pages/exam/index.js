@@ -8,6 +8,8 @@ import cookie from 'react-cookies';
 import _, { each } from 'lodash'
 import Countdown from 'react-countdown';
 import ExamTimeOut from "../components/exam/ExamTimeOut";
+import moment from 'moment'
+
 
 export class index extends Component {
 
@@ -284,9 +286,10 @@ export class index extends Component {
             exam_id:this.state.exam_info._id,
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_finished:true,
-            exam_score:score
+            exam_score:score,
+            exam_end_datetime:moment().format()
         }
-        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+        axios.post(`${process.env.backendURL}/exam/submit_exam`,temp_data)
         .then(response=>{
             this.setState({
                 exam_timeout:true
@@ -327,7 +330,7 @@ export class index extends Component {
                         {this.state.exam_timeout
                         ?
                         <>
-                        <div className="col-md-12">
+                        <div className="col-md-12  show-time-out">
                             <center>
                                 <h2>Time Out</h2>
                                 <br/>
