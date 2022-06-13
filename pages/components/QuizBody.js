@@ -2,30 +2,102 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import cookie from 'react-cookies';
 import Link from 'next/link';
-import { Router, withRouter } from 'next/router'
+import { Router, withRouter } from 'next/router';
+import axios from "axios";
+import Countdown from 'react-countdown';
+import ExamTimeOut from "../components/exam/ExamTimeOut";
 
 export class QuizBody extends Component {
 
   constructor(props){
+
     super(props)
+     //console.log(props);
     this.state={
-      userinfo:cookie.load('qtonix_quiz_userdata')
+      userinfo:cookie.load('qtonix_quiz_userdata'),
+      show_dropdown:false
     }
+   
   }
 
   componentDidMount(){
-    console.log(this.state.userinfo)
   }
+
+  componentDidUpdate(props){
+  }
+  componentWillReceiveProps(props){
+     console.log(props);
+     if( props.state_data){
+         this.setState({
+            exam_info: props.state_data.exam_info,
+            showTimer: props.state_data.showTimer,
+            exam_start_time: props.state_data.exam_start_time,
+            exam_timeout:false
+          });
+     }
+     
+     
+  }
+
 
   handleLogout=e=>{
     cookie.remove('qtonix_quiz_userdata', { path: '/' })
     cookie.remove('qtonix_quiz_userid', { path: '/' })
-    this.props.router.push('/login')
-
-    // console.log(this.props)
+    this.props.router.push('/login');
 
   }
+  toggleDropDown=e=>{
+      
+      this.setState({
+                show_dropdown:!this.state.show_dropdown
+            })
+  }
 
+    examTimeout=()=>{
+        var temp_data={
+            exam_id:this.props.exam_info._id,
+            user_id:cookie.load('qtonix_quiz_userdata')._id,
+            exam_timeout:true,
+        }
+        axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+        .then(response=>{
+        
+         this.props.handleExamTimeout(true);
+        })
+    }
+
+
+    onMountTimeout=({ hours, minutes, seconds, completed })=>{
+        if(completed){
+            var temp_data={
+                exam_id:this.props.exam_info._id,
+                user_id:cookie.load('qtonix_quiz_userdata')._id,
+                exam_timeout:true,
+            }
+            axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
+            .then(response=>{
+              
+               this.props.handleExamTimeout(true);
+            })
+        }
+    }
+        renderer = ({ hours, minutes, seconds, completed }) => {
+        
+        if (completed) {
+            return <ExamTimeOut />;
+           
+
+        } else {
+         let digit1hours=Math.floor(hours / 10);
+            let digit2hours=hours % 10;
+            let digit1minutes=Math.floor(minutes / 10);
+            let digit2minutes=minutes % 10;
+            let digit1seconds=Math.floor(seconds / 10);
+            let digit2seconds=seconds % 10;
+            return <span className="text-center"> Time Remaining <p className="timer_digit">  <span>{digit1hours}</span> <span>{digit2hours}</span> : <span>{digit1minutes}</span> <span>{digit2minutes}</span> : <span>{digit1seconds}</span> <span>{digit2seconds}</span> </p> </span>;
+       
+        }
+    };
 
   render() {
     return (
@@ -46,80 +118,22 @@ export class QuizBody extends Component {
         </button>
         {/* Navbar Item */}
         <div className="collapse navbar-collapse d-none d-xl-block d-none d-xl-block" id="navbarSupportedContent">
-          <ul className="navbar-nav mx-auto mb-2 mb-lg-0" style={{visibility:'hidden'}}>
-            <li className="nav-item">
-              <a className="nav-link active" aria-current="page" href="#">
-                Home
-              </a>
-              <div className="nav-item--dropdown">
-                <ul>
-                  <li className="active"><a href="index.html"> Homepage 01</a></li>
-                  <li><a href="home-02.html">Homepage 02</a></li>
-                  <li><a href="home-03.html">Homepage 03</a></li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
-                Course
-              </a>
-              <div className="nav-item--dropdown">
-                <ul>
-                  <li><a href="course-search.html">search course list</a></li>
-                  <li><a href="course-details.html">course details</a></li>
-                  <li><a href="watch.html">Watch Course</a></li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="about.html">About</a>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" aria-current="page" href="#">
-                Events
-              </a>
-              <div className="nav-item--dropdown">
-                <ul>
-                  <li><a href="event-search.html">Events Search list</a></li>
-                  <li><a href="event.html">Event Details</a></li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="#">
-                Pages
-              </a>
-              <div className="nav-item--dropdown">
-                <ul>
-                  <li>
-                    <a href="#">
-                      My Account
-                    </a>
-                    <div className="nav-item--subDropdown">
-                      <ul>
-                        <li><a href="students-profile.html">Students Profile</a></li>
-                        <li><a href="signin.html">Sign in</a></li>
-                        <li><a href="signup.html">Sign up</a></li>
-                        <li><a href="verify.html">Verify Email</a></li>
-                        <li><a href="forget-password.html">Forget Password</a></li>
-                        <li><a href="reset-password.html">Reset Password</a></li>
-                      </ul>
-                    </div>
-                  </li>
-                  <li><a href="instructor-profile.html">Instructor Profile</a></li>
-                  <li><a href="become-instructor.html">Become Instructor</a></li>
-                  <li><a href="cart.html">cart</a></li>
-                  <li><a href="checkout.html">Check out</a></li>
-                  <li><a href="faq.html">Faq</a></li>
-                  <li><a href="404.html">404</a></li>
-                  <li><a href="comingsoon.html">Coming Soon</a></li>
-                </ul>
-              </div>
-            </li>
-            <li className="nav-item">
-              <a className="nav-link" href="contact.html">Contact</a>
-            </li>
-          </ul>
+          <div className="navbar-nav mx-auto mb-2 mb-lg-0" >
+              {(this.state.showTimer && !this.state.exam_timeout && this.state.exam_info && this.state.exam_start_time) ?
+                 <>  
+                   <Countdown
+                          date={Number(this.state.exam_start_time) + Number(this.state.exam_info.duration)*60*1000}
+                          renderer={this.renderer}
+                          onComplete={this.examTimeout}
+                          onMount={this.onMountTimeout}
+                      /> 
+                 </>
+                :
+                  <>
+                  </>
+              }
+          </div>
+          
           <div className="d-flex align-items-center justify-content-between rightContent">
             
             
@@ -131,9 +145,16 @@ export class QuizBody extends Component {
               </>
             :
               <>
-              <Link href={'/dashboard'}><a className="button button--text">Dashboard</a></Link>
-              <Link href={'/profile'}><a className="button button--text">Profile</a></Link>
-              <p className="button button--text" onClick={this.handleLogout} style={{cursor:'pointer'}}>Logout</p>
+              <div className="dropdown">
+                <a href="#" className="" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" id="dLabel" onClick={this.toggleDropDown}>
+                  <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Student" style={{'width':'50px'}}/>
+                </a>
+                <div  className={`dropdown-menu ${this.state.show_dropdown?'show':''}`} aria-labelledby="dLabel">
+                   <Link href={'/dashboard'}><a className="button button--text">Dashboard</a></Link>
+                  <Link href={'/profile'}><a className="button button--text">Profile</a></Link>
+                  <p className="button button--text" onClick={this.handleLogout} style={{cursor:'pointer'}}>Logout</p>
+                </div>
+              </div>
               </>
             }
             

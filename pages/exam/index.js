@@ -5,12 +5,8 @@ import { connect } from "react-redux";
 import Auth from "../Auth";
 import QuizBody from "../components/QuizBody";
 import cookie from 'react-cookies';
-import _, { each } from 'lodash'
-import Countdown from 'react-countdown';
-import ExamTimeOut from "../components/exam/ExamTimeOut";
-import moment from 'moment'
-
-
+import _, { each } from 'lodash';
+import moment from 'moment';
 export class index extends Component {
 
  constructor(props){
@@ -23,7 +19,9 @@ export class index extends Component {
         exam_timer:0,
         exam_start:true,
         exam_timeout:false,
-        exam_score:0
+        exam_score:0,
+        exam_start_time:'',
+        showTimer:true
      }
  }
  componentDidMount(){
@@ -38,11 +36,31 @@ export class index extends Component {
                 exam_question_answer_data:response.data.questions
             }
 
+
             //create exam under user
             axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
             .then(response1=>{
                 
                 console.log(response.data.examinfo)
+
+                    /* let questions=response1.data.datas.exam_question_answer_data;
+                    questions.map((question,index) =>{
+                            question.marked_for_review==undefined?question.marked_for_review=false:true; 
+                            question.skipped==undefined?question.skipped=false:true; 
+                     })
+                    this.setState({
+                        loadingPage:false,
+                        exam_info:response1.data.datas.exam_info,
+                        exam_question_answer_data:response1.data.datas.exam_question_answer_data,
+                        exam_start:true,
+                        exam_start_time:response1.data.datas.exam_start_time,
+                        exam_timeout:false,
+                    })
+*/
+
+
+
+                    //////
               
                 if(response1.data.datas.exam_timeout){
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
@@ -179,8 +197,8 @@ export class index extends Component {
 
 
     // Renderer callback with condition
-    renderer = ({ hours, minutes, seconds, completed }) => {
-        
+   /* renderer = ({ hours, minutes, seconds, completed }) => {
+        //console.log('coming');
         if (completed) {
             return <ExamTimeOut />;
            
@@ -209,6 +227,7 @@ export class index extends Component {
         axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
         .then(response=>{
         
+        //////
          this.setState({
                 exam_timeout:true
             })
@@ -226,13 +245,19 @@ export class index extends Component {
             axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
             .then(response=>{
               
+              //////
                 this.setState({
                     exam_timeout:true
                 })
             })
         }
+    }*/
+    handleExamTimeout=(value)=>{
+        console.log(value);
+        this.setState({
+            exam_timeout:value
+        })
     }
-
     handleSkipQuestion=()=>{
 
          var datas=this.state.exam_question_answer_data;
@@ -258,6 +283,7 @@ export class index extends Component {
 
         
     }
+
     handleSubmitExam=()=>{
 
         var score=0;
@@ -303,7 +329,7 @@ export class index extends Component {
 
   render() {
     return (
-      <QuizBody>
+      <QuizBody state_data={this.state}  handleExamTimeout={(value)=>{ this.handleExamTimeout(value); }}>
         <Auth>
         {/* <div className="py-0 mt-5">
             <div className="container">
@@ -335,8 +361,8 @@ export class index extends Component {
                                 <h2>Time Out</h2>
                                 <br/>
                                 <p>Total: {this.state.exam_question_answer_data.length}</p>
-                                <p>Answered: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
-                                <p>Unanswerrd: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
+                                <p>Attempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
+                                <p>Unattempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
                                 <br/>
                                 <button className="btn btn-primary text-white" onClick={this.handleSubmitExam}>Submit</button>
                             </center>
@@ -344,19 +370,8 @@ export class index extends Component {
                         </>
                         :
                         <>
-                        <div className="col-md-4 offset-md-8 mb-2">
+                        {/*<div className="col-md-4 offset-md-8 mb-2">
                             <center>
-                                {/* <Countdown date={Number(this.state.exam_start_time) + 60*60*1000}>
-                                    <p>Completed</p>
-                                </Countdown> */}
-
-                                {/* <Countdown
-                                    date={Date.now() + 5000}
-                                    renderer={this.renderer}
-                                    onComplete={this.examTimeout}
-                                /> */}
-
-                                
                                 <Countdown
                                     date={Number(this.state.exam_start_time) + Number(this.state.exam_info.duration)*60*1000}
                                     renderer={this.renderer}
@@ -365,7 +380,7 @@ export class index extends Component {
                                 />                              
 
                             </center>
-                        </div>
+                        </div>*/}
                         <div className="col-md-8">
                             <div className="heading-container">
                                     <h5 className="p-3"> <p style={{fontSize:'14px',marginBottom:'10px'}}>Q {this.state.showQuestion}/{this.state.exam_question_answer_data.length}</p>{this.state.exam_question_answer_data[this.state.showQuestion-1].question}</h5>    
@@ -384,7 +399,6 @@ export class index extends Component {
                                         </div>
                                     )
                                 })}
-                                {}
                                 
 
                                 <br/>
