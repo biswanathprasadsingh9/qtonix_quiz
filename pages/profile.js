@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import Auth from './Auth'
-import Body from './components/Body'
+import QuizBody from './components/QuizBody'
 import cookie from 'react-cookies';
 import axios from 'axios';
 import Link from 'next/link';
@@ -191,7 +191,7 @@ export const Profile = (props) => {
 
 
   return (
-    <Body>
+    <QuizBody>
 
         <Auth>
         {/* Breadcrumb Starts Here */}
@@ -207,6 +207,7 @@ export const Profile = (props) => {
         <img src="https://thumbs.gfycat.com/EnchantingInbornDogwoodtwigborer-size_restricted.gif" alt="asaas" className='myloader' />
         </center>
         :
+
         <section className="section students-info">
             <div className="container">
                 <div className="row">
@@ -291,7 +292,7 @@ export const Profile = (props) => {
 
 
 
-    </Body>
+    </QuizBody>
   )
 }
 

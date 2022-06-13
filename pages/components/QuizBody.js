@@ -330,7 +330,7 @@ export class QuizBody extends Component {
                 <div className="footer__list mb-0">
                  
                   <ul>
-                    <li><a href="term-condition">Term & Condition</a></li>
+                    <li><Link href="/term-condition">Term & Condition</Link></li>
                   </ul>
                 </div>
               </div>
@@ -338,7 +338,7 @@ export class QuizBody extends Component {
                 <div className="footer__list  mb-0">
                   
                   <ul>
-                    <li><a href="privacy-policy">Privacy Policy</a></li>
+                    <li><Link href="/privacy-policy">Privacy Policy</Link></li>
                   </ul>
                 </div>
               </div>
