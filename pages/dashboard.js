@@ -132,6 +132,8 @@ export const Account = (props) => {
                       <br/>
                        <p>Duration: {examinfo.duration} min</p>
                        <p>State Date: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
+                       <p>End Date: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
+
                        <p>Total Questions: {examinfo.qsn_ans.length}</p>
                        <p>Pass: {examinfo.pass_percentage} %</p>
 
