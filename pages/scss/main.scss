@@ -83,7 +83,6 @@ body{
   
     p{
         margin-top: 10px;
-        margin-left: 20px;
     }
     h6{
         margin-left: 20px;
@@ -92,7 +91,11 @@ body{
         color: #ff5722;
     }
 }
-
+.disc-list li{
+    
+    list-style: initial;
+    margin-left: 30px;
+}
 
 .bg-correct{
     background-color: #4caf50;
@@ -195,6 +198,7 @@ body{
 }
 .show-time-out{
     padding:100px 0px;
+
 }
 
 

@@ -164,25 +164,27 @@ export const Result = (props) => {
                                 <div className={`qbox students-info-intro p-3 ${data.answer_user===data.answer && data.answer_user!==undefined?'corrent-results':''} ${data.answer_user!==data.answer && data.answer_user!==undefined?'wrong-results':''} ` } key={key}>
                                     <p style={{marginBottom:'10px',textDecoration:'underline'}}>Questions- {key+1}/{examinfo.exam_question_answer_data.length}</p>
                                         <h5 style={{textIndent:'30px'}}>{data.question}</h5>
+                                        <ul className="disc-list">
                                     {data.options.map((optn,okey)=>{
 
                                         if(data.answer_user===undefined){
                                             return(
-                                                <p key={okey}> <span  className={`bg-trans`} >{okey+1}. {optn}</span></p>
+                                               <li> <p key={okey}> <span  className={`bg-trans`} >{optn}</span></p></li> 
                                             )
                                         }else{
 
                                             if(data.answer_user===data.answer){
                                                 return(
-                                                    <p  key={okey}> <span className={okey+1===data.answer_user?`bg-correct`:``} >{okey+1}. {optn}  </span>  {okey+1===data.answer_user?<span className='textcorrect'>&nbsp;+1 Mark</span>:``}</p>
+                                                   <li>  <p  key={okey}> <span className={okey+1===data.answer_user?`bg-correct`:``} >{optn}  </span>  {okey+1===data.answer_user?<span className='textcorrect'>&nbsp;+1 Mark</span>:``}</p></li>
                                                 )
                                             }else{
                                                 return(
-                                                    <p  key={okey}> <span className={okey+1===data.answer_user?`bg-wrong`:``}>{okey+1}. {optn}</span> </p>
+                                                   <li>  <p  key={okey}> <span className={okey+1===data.answer_user?`bg-wrong`:``}>{optn}</span> </p></li>
                                                 )
                                             }
                                         }
                                     })}
+                                    </ul>
                                     {data.answer_user===undefined?<p className="text-end"> <span className="bg-wrong"> Not Attempted</span> </p>:``}
                                     
                                 </div>
