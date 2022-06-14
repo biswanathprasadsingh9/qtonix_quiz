@@ -9,6 +9,8 @@ import moment from 'moment'
 import { useRouter } from 'next/router';
 import Moment from 'react-moment';
 import TableDashboard from './components/TableDashboard';
+import { CircularProgressbar } from 'react-circular-progressbar';
+import 'react-circular-progressbar/dist/styles.css';
 
 
 import { Check, Edit3, Eye, X } from 'react-feather';
@@ -121,7 +123,7 @@ export const Account = (props) => {
                 <div className="row">
                 {examfound
                   ?<>
-                  <div className="col-md-8">
+                  <div className="col-md-7">
                    {/* <div className="image">
                       <img src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Student" />
                     </div>*/}
@@ -136,7 +138,7 @@ export const Account = (props) => {
                       {/* <p>{userinfo.email}</p> */}
                     </div>
                   </div>
-                    <div className="col-md-4">
+                    <div className="col-md-5">
                     <div className="enrolled-courses">
 
                       <div className="enrolled-courses-text">
@@ -146,18 +148,70 @@ export const Account = (props) => {
                           userexaminfo.exam_score===undefined
                           ?
 
-                          <button className='btn btn-primary text-white mt-3' onClick={startExam}><Edit3  size={18} /> Continue Exam</button>
+                          <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam}><Edit3  size={18} /> Continue Exam</button>
                           :
                           <>
-                              <Link href={`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${userexaminfo.exam_id}&u=${userexaminfo.user_id}`}>
-                                        <a className='btn btn-primary btn-sm text-white'><Eye size={18} /> View Result</a>
+                               <center>
+                                <div style={{ width: 150 }}>
+                                {Math.round(_.filter(userexaminfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/userexaminfo.exam_question_answer_data.length*100)>=userexaminfo.exam_info.pass_percentage
+                                ?
+                                <>
+                                    <CircularProgressbar 
+                                           
+                                        value={Math.round(_.filter(userexaminfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/userexaminfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(userexaminfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/userexaminfo.exam_question_answer_data.length*100)}%`} 
+                                        styles={{ 
+                                            text: {
+                                              fill: '#0ecd0e',
+                                              fontSize: '16px',
+                                            },
+                                            background: {
+                                              fill: '#0ecd0e',
+                                            },
+                                            path: {
+      
+                                                  stroke: `#0ecd0e`,
+                                            },
+                                        }}
+                                     />
+                                     <h4 style={{color: "#0ecd0e",marginTop: '10%'}} >Pass </h4>
+
+                                    </>:
+                                    <>
+                                      <CircularProgressbar 
+                                            
+                                        value={Math.round(_.filter(userexaminfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/userexaminfo.exam_question_answer_data.length*100)} 
+                                        text={`${Math.round(_.filter(userexaminfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/userexaminfo.exam_question_answer_data.length*100)}%`} 
+                                        styles={{ 
+                                            text: {
+                                              fill: '#ff5151',
+                                              fontSize: '16px',
+                                            },
+                                            background: {
+                                              fill: '#ff5151',
+                                            },
+                                            path: {
+      
+                                                  stroke: `#ff5151`,
+                                            },
+                                        }}
+                                     />
+                                         <h4 style={{color: "#ff5151",marginTop: '10%'}}>Fail </h4>
+                                        
+                                    </>}
+                                </div>
+                                 <Link href={`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${userexaminfo.exam_id}&u=${userexaminfo.user_id}`}>
+                                        <a className='btn btn-primary btn-sm text-white mt-4'><Eye size={18} /> View Full Result</a>
 
                                     </Link>
+                            </center>
+                             
                           </>
 
                         :
-
-                        <button className='btn btn-primary text-white mt-5' onClick={startExam}><Check size={18} /> Start Exam</button>
+                         <>
+                        <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam}><Check size={18} /> Start Exam</button>
+                        </>
 
                         }
 

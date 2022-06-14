@@ -93,21 +93,21 @@ export const Result = (props) => {
                                            
                                         value={Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)} 
                                         text={`${Math.round(_.filter(examinfo.exam_question_answer_data, function(o) { return o.answer_user!==undefined && o.answer_user===o.answer }).length/examinfo.exam_question_answer_data.length*100)}%`} 
-                                        styles={{ 
+                                       styles={{ 
                                             text: {
-                                              fill: '#1089ff',
+                                              fill: '#0ecd0e',
                                               fontSize: '16px',
                                             },
                                             background: {
-                                              fill: '#1089ff',
+                                              fill: '#0ecd0e',
                                             },
                                             path: {
       
-                                                  stroke: `#1089ff`,
+                                                  stroke: `#0ecd0e`,
                                             },
                                         }}
                                      />
-                                     <h4 style={{color: "#1089ff",marginTop: '10%'}} >Pass </h4>
+                                     <h4 style={{color: "#0ecd0e",marginTop: '10%'}} >Pass </h4>
                                      <p>Pass Mark: {examinfo.exam_info.pass_percentage}%</p>
                                     {/*<div className="students-info-intro-end justify-content-center mt-3">
                                         <div className="enrolled-courses">
@@ -162,7 +162,8 @@ export const Result = (props) => {
 
                             return(
                                 <div className={`qbox students-info-intro p-3 ${data.answer_user===data.answer && data.answer_user!==undefined?'corrent-results':''} ${data.answer_user!==data.answer && data.answer_user!==undefined?'wrong-results':''} ` } key={key}>
-                                    <h5>{key+1}/{examinfo.exam_question_answer_data.length} - {data.question}</h5>
+                                    <p style={{marginBottom:'10px',textDecoration:'underline'}}>Questions- {key+1}/{examinfo.exam_question_answer_data.length}</p>
+                                        <h5 style={{textIndent:'30px'}}>{data.question}</h5>
                                     {data.options.map((optn,okey)=>{
 
                                         if(data.answer_user===undefined){
@@ -187,9 +188,6 @@ export const Result = (props) => {
                                 </div>
                             )
                         })}
-
-
-
                     </div>
                 </div>
             </div>

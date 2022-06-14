@@ -62,7 +62,7 @@ export class index extends Component {
 
                     //////
               
-                if(response1.data.datas.exam_timeout){
+                if(response1.data.datas.exam_timeout || response1.data.datas.exam_finished){
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
                 }else{
 
@@ -383,7 +383,7 @@ export class index extends Component {
                         </div>*/}
                         <div className="col-md-8">
                             <div className="heading-container">
-                                    <h5 className="p-3"> <p style={{fontSize:'14px',marginBottom:'10px'}}>Q {this.state.showQuestion}/{this.state.exam_question_answer_data.length}</p>{this.state.exam_question_answer_data[this.state.showQuestion-1].question}</h5>    
+                                    <h5 className="p-3"> <p style={{fontSize:'14px',marginBottom:'10px'}}>Question {this.state.showQuestion}/{this.state.exam_question_answer_data.length}</p>{this.state.exam_question_answer_data[this.state.showQuestion-1].question}</h5>    
                                 </div>
                             <div className="students-info-intro m2">
                                 
