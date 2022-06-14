@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import Image from 'next/image'
-import Body from './components/Body'
+import QuizBody from './components/QuizBody'
 
 export default function Home() {
   return (
-    <Body>
+    <QuizBody>
       
       <section className="main-banner" style={{backgroundImage: 'url(dist/images/banner/banner.jpg)'}}>
     <div className="container">
@@ -196,31 +196,9 @@ export default function Home() {
       <img src="dist/images/shape/line03.png" alt="shape" className="img-fluid" />
     </div>
   </section>
-  {/* News Letter Starts Here */}
-  <section style={{backgroundColor: '#ebebf2'}}>
-    <div className="container">
-      <div className="row">
-        <div className="col-lg-8 mx-auto">
-          <div className="newsletter-area">
-            <h4>Subscribe our Newsletter</h4>
-            <p className="mt-2 mb-lg-4 mb-3">
-              Duis posuere maximus arcu eu tincidunt. Nam rutrum, nibh vitae tempus venenatis, ex tortor ultricies magna, et faucibus magna eros quis arcu.
-            </p>
-            <form>
-              <div className="input-group">
-                <input type="email" className="form-control border-lowBlack" placeholder="Your email" />
-                <button className="button button-lg button--primary" type="button">
-                  Subscribe
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
+  
 
 
-    </Body>
+    </QuizBody>
   )
 }
