@@ -23,8 +23,20 @@ export class QuizBody extends Component {
   componentDidMount(){
   }
 
-  componentDidUpdate(props){
-  }
+/*  componentDidUpdate(prevProps, nextProps){
+    console.log(prevProps);
+    console.log(nextProps);
+    if(prevProps !== nextProps){
+      if( nextProps.state_data){
+         this.setState({
+            exam_info: nextProps.state_data.exam_info,
+            showTimer: nextProps.state_data.showTimer,
+            exam_start_time: nextProps.state_data.exam_start_time,
+            exam_timeout:false
+          });
+     }
+    }
+  }*/
   UNSAFE_componentWillReceiveProps(props){
      console.log(props);
      if( props.state_data){
