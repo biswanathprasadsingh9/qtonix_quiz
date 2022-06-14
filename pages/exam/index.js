@@ -489,8 +489,23 @@ export class index extends Component {
                     :
                     <>
                         <center>
-                            <button className="btn btn-primary text-white" onClick={()=>this.startExam()}>Start Exam</button>
+                            {/* <button className="btn btn-primary text-white" onClick={()=>this.startExam()}>Start Exam</button> */}
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+                            <br/>
+
+                            <h1>Wrong URL</h1>
+                            <br/>
+                            <br/>
+                            <br/>
+
                         </center>
+                        
                     </>
                     }
 
