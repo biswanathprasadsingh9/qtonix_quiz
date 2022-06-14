@@ -49,7 +49,7 @@ export const TableDashboard = (props) => {
                             <td>{data.exam_info.name}</td>
                             <td>{data.student_exam_code}</td>
                             <td>{data.exam_score===undefined?'-':data.exam_score}</td>
-                            <td><Moment format="YYYY-MMMM-DD hh:mm:ss A">{data.exam_end_datetime}</Moment></td>
+                            <td><Moment format="YYYY-MMMM-DD">{data.exam_end_datetime}</Moment></td>
                             <td>
                                 -
                             </td>

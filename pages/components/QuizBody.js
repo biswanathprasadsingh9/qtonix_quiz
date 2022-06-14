@@ -44,7 +44,7 @@ export class QuizBody extends Component {
             exam_info: props.state_data.exam_info,
             showTimer: props.state_data.showTimer,
             exam_start_time: props.state_data.exam_start_time,
-            exam_timeout:false
+            exam_timeout:props.state_data.exam_timeout
           });
      }
      

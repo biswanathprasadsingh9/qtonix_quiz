@@ -25,25 +25,27 @@ export class index extends Component {
      }
  }
  componentDidMount(){
+     if(!cookie.load('qtonix_quiz_userdata')){
+         Router.push('/login');
+         return;
+     }
      axios.post(`${process.env.backendURL}/exam/latestexam`)
      .then(response=>{
          if(response.data.response){
 
-            var create_exam_for_user={
+            var view_exam_details_for_user={
                 user_id:cookie.load('qtonix_quiz_userdata')._id,
-                exam_id:response.data.examinfo._id,
-                exam_info:response.data.examinfo,
-                exam_question_answer_data:response.data.questions
+                exam_id:response.data.examinfo._id
             }
 
 
-            //create exam under user
-            axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
+            //view exam details under user
+            axios.post(`${process.env.backendURL}/exam/viewexamdetails`,view_exam_details_for_user)
             .then(response1=>{
                 
                 console.log(response.data.examinfo)
-
-                    /* let questions=response1.data.datas.exam_question_answer_data;
+/*
+                     let questions=response1.data.datas.exam_question_answer_data;
                     questions.map((question,index) =>{
                             question.marked_for_review==undefined?question.marked_for_review=false:true; 
                             question.skipped==undefined?question.skipped=false:true; 
@@ -55,29 +57,32 @@ export class index extends Component {
                         exam_start:true,
                         exam_start_time:response1.data.datas.exam_start_time,
                         exam_timeout:false,
-                    })
-*/
+                    })*/
+
 
 
 
                     //////
-              
-                if(response1.data.datas.exam_timeout || response1.data.datas.exam_finished){
+                  if(!response1.data.data){
+                    Router.push(`/dashboard`);
+                    return;
+                }
+                if(response1.data.data.exam_timeout || response1.data.data.exam_finished){
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
                 }else{
 
-                     let questions=response1.data.datas.exam_question_answer_data;
+                     let questions=response1.data.data.exam_question_answer_data;
                     questions.map((question,index) =>{
                             question.marked_for_review==undefined?question.marked_for_review=false:true; 
                             question.skipped==undefined?question.skipped=false:true; 
                      })
                     this.setState({
                         loadingPage:false,
-                        exam_info:response1.data.datas.exam_info,
-                        exam_question_answer_data:response1.data.datas.exam_question_answer_data,
-                        exam_start:response1.data.datas.exam_start,
-                        exam_start_time:response1.data.datas.exam_start_time,
-                        exam_timeout:response1.data.datas.exam_timeout,
+                        exam_info:response1.data.data.exam_info,
+                        exam_question_answer_data:response1.data.data.exam_question_answer_data,
+                        exam_start:response1.data.data.exam_start,
+                        exam_start_time:response1.data.data.exam_start_time,
+                        exam_timeout:response1.data.data.exam_timeout,
                     })
                 }
 
@@ -202,10 +207,8 @@ export class index extends Component {
         if (completed) {
             return <ExamTimeOut />;
            
-
         } else {
         // Render a countdown
-
          let digit1hours=Math.floor(hours / 10);
             let digit2hours=hours % 10;
             let digit1minutes=Math.floor(minutes / 10);
@@ -216,8 +219,6 @@ export class index extends Component {
         //return <span>{hours}:{minutes}:{seconds}</span>;
         }
     };
-
-
     examTimeout=()=>{
         var temp_data={
             exam_id:this.state.exam_info._id,
@@ -233,8 +234,6 @@ export class index extends Component {
             })
         })
     }
-
-
     onMountTimeout=({ hours, minutes, seconds, completed })=>{
         if(completed){
             var temp_data={
@@ -358,11 +357,10 @@ export class index extends Component {
                         <>
                         <div className="col-md-12  show-time-out">
                             <center>
+                             <img src="/clock.gif" alt="Logo" className="img-fluid" style={{width:'150px',height:'auto'}} />
                                 <h2>Time Out</h2>
                                 <br/>
-                                <p>Total: {this.state.exam_question_answer_data.length}</p>
-                                <p>Attempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
-                                <p>Unattempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
+                                <p>Attempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}/ {this.state.exam_question_answer_data.length}</p>
                                 <br/>
                                 <button className="btn btn-primary text-white" onClick={this.handleSubmitExam}>Submit</button>
                             </center>
@@ -378,7 +376,6 @@ export class index extends Component {
                                     onComplete={this.examTimeout}
                                     onMount={this.onMountTimeout}
                                 />                              
-
                             </center>
                         </div>*/}
                         <div className="col-md-8">
