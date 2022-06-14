@@ -227,8 +227,8 @@ export const Profile = (props) => {
                                     <label>Phone Number</label>
                                 </div>
                                 <div className="form-alert-input">
-                                    <input type="text" placeholder="Your Phone Number" name='phone' value={data.phone} onChange={handleChange} />
-                                    <span className='small'>Ex. (508) 555-1234 or 5085551234</span>
+                                    <input type="text" placeholder="Ex. (508) 555-1234 or 5085551234" name='phone' value={data.phone} onChange={handleChange} />
+                                    
                                 </div>
                                 {simpleValidator.current.message('phone', data.phone, 'required|phone', { className: 'text-danger' })}
                             </div>
