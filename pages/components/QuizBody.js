@@ -25,7 +25,7 @@ export class QuizBody extends Component {
 
   componentDidUpdate(props){
   }
-  componentWillReceiveProps(props){
+  UNSAFE_componentWillReceiveProps(props){
      console.log(props);
      if( props.state_data){
          this.setState({
