@@ -67,7 +67,7 @@ export class QuizBody extends Component {
 
     examTimeout=()=>{
         var temp_data={
-            exam_id:this.props.exam_info._id,
+            exam_id:this.state.exam_info._id,
             user_id:cookie.load('qtonix_quiz_userdata')._id,
             exam_timeout:true,
         }
@@ -82,7 +82,7 @@ export class QuizBody extends Component {
     onMountTimeout=({ hours, minutes, seconds, completed })=>{
         if(completed){
             var temp_data={
-                exam_id:this.props.exam_info._id,
+                exam_id:this.state.exam_info._id,
                 user_id:cookie.load('qtonix_quiz_userdata')._id,
                 exam_timeout:true,
             }
@@ -96,7 +96,7 @@ export class QuizBody extends Component {
         renderer = ({ hours, minutes, seconds, completed }) => {
         
         if (completed) {
-            return <ExamTimeOut />;
+            return "";
            
 
         } else {
@@ -122,9 +122,10 @@ export class QuizBody extends Component {
     <nav className="navbar navbar-expand-xl navbar-light bg-transparent">
       <div className="container">
         {/* Logo */}
-        
+        <Link href={'/dashboard'}>
+        <a className="navbar-brand" >
           <img src="https://cdn.pixabay.com/photo/2017/02/17/15/25/quiz-2074324_960_720.png" alt="Logo" className="img-fluid" style={{height:'60px'}} />
-       
+        </a></Link>
         <button className="menu-icon-container">
           <span className="menu-icon" />
         </button>

@@ -28,9 +28,9 @@ export const TableDashboard = (props) => {
     <table className="table">
         <thead>
             <tr>
-            <th scope="col">Exam Name</th>
-            <th scope="col">Exam ID</th>
-            <th scope="col">Exam Score</th>
+            <th scope="col">Name</th>
+            <th scope="col">ID</th>
+            <th scope="col">Score</th>
             <th scope="col">Date</th>
             <th scope="col"></th>
             <th scope="col"></th>
