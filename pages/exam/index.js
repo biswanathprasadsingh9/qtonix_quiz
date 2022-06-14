@@ -33,13 +33,12 @@ export class index extends Component {
                 user_id:cookie.load('qtonix_quiz_userdata')._id,
                 exam_id:response.data.examinfo._id,
                 exam_info:response.data.examinfo,
-                exam_question_answer_data:response.data.questions,
-                exam_start:true,
+                exam_question_answer_data:response.data.questions
             }
 
 
             //create exam under user
-            axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
+            axios.post(`${process.env.backendURL}/exam/exam_create_view1`,create_exam_for_user)
             .then(response1=>{
                 
                 console.log(response.data.examinfo)
@@ -492,11 +491,7 @@ export class index extends Component {
                         <center>
                             {/* <button className="btn btn-primary text-white" onClick={()=>this.startExam()}>Start Exam</button> */}
                             <br/>
-                            <br/>
-                            <br/>
                             <h1>Wrong URL</h1>
-                            <br/>
-
                         </center>
                         
                     </>
