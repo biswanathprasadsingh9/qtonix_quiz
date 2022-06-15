@@ -103,7 +103,7 @@ export const Login = (props) => {
                             <label>Email</label>
                         </div>
                         <div className="form-alert-input">
-                            <input type="text" placeholder="Your Email" name='email' value={data.email} onChange={handleChange} />
+                            <input type="text" placeholder="Your Email" name='email' id='email' value={data.email} onChange={handleChange} />
                         </div>
                         {simpleValidator.current.message('email', data.email, 'required|email', { className: 'text-danger' })}
                     </div>
@@ -115,7 +115,7 @@ export const Login = (props) => {
                             <Link href={'/forgetpassword'}><a className="text-primary fs-6">Forget Password</a></Link>
                         </div>
                         <div className="form-alert-input">
-                            <input type={eyePassword?`text`:`password`} placeholder="Your Password" name='password' value={data.password} onChange={handleChange} />
+                            <input type={eyePassword?`text`:`password`} placeholder="Your Password" name='password' id='password' value={data.password} onChange={handleChange} />
                         
                             {eyePassword
                             ?
@@ -136,7 +136,7 @@ export const Login = (props) => {
                     <div className="form-element">
                         {loading
                         ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                        :<button type="submit" className="button button-lg button--primary w-100"><LogIn size={16} /> Login</button>
+                        :<button type="submit" className="button button-lg button--primary w-100" id='submit'><LogIn size={16} /> Login</button>
                         }
                     </div>
                     

@@ -119,18 +119,21 @@ body{
 }
 .students-info-intro{
     
-   padding: 0px 20px 10px 20px;
+    padding: 0px 20px 10px 20px;
 }
 .heading-container{
-    background-color: #858585;
+    background-color: #1089ff;
     border-radius: 6px;
     color: white;
+    margin-bottom: 10px;
 }
 .question-index-container{
    color: var(--bs-body-color);
     border-radius: 1px;
     border-bottom: solid 1px black;
     background-color: #f1f8ff;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
 }
 
 .current-question{

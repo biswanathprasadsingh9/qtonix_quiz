@@ -18,6 +18,9 @@ import { Check, Edit3, Eye, X } from 'react-feather';
 export const Account = (props) => {
   const router = useRouter()
 
+    const [loadingButton,setloadingButton]=useState(false);
+
+
     const [loadingPage,setloadingPage]=useState(true);
     const [examfound,setExamFound]=useState(false);
     const [userinfo,setUserInfo]=useState(cookie.load('qtonix_quiz_userdata'));
@@ -52,50 +55,52 @@ export const Account = (props) => {
     const startExam=()=>{
     
 
-      console.log(moment().isAfter(examinfo.start_time))
-      console.log(moment().isBefore(examinfo.end_time))
 
       if(moment().isAfter(examinfo.start_time)===true && moment().isBefore(examinfo.end_time)){
         
-
+        setloadingButton(true)
         
-      axios.post(`${process.env.backendURL}/exam/latestexam`)
-     .then(response=>{
-         if(response.data.response){
+          axios.post(`${process.env.backendURL}/exam/latestexam`)
+          .then(response=>{
+              if(response.data.response){
 
-            var create_exam_for_user={
-                user_id:cookie.load('qtonix_quiz_userdata')._id,
-                exam_id:response.data.examinfo._id,
-                exam_info:response.data.examinfo,
-                exam_question_answer_data:response.data.questions,
-                exam_start:true,
-                exam_start_time:Date.now(),
-                exam_start_datetime:moment().format()
-            }
+                  var create_exam_for_user={
+                      user_id:cookie.load('qtonix_quiz_userdata')._id,
+                      exam_id:response.data.examinfo._id,
+                      exam_info:response.data.examinfo,
+                      exam_question_answer_data:response.data.questions,
+                      exam_start:true,
+                      exam_start_time:Date.now(),
+                      exam_start_datetime:moment().format()
+                  }
 
-            //create exam under user
-            axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
-            .then(response1=>{
-                router.push('/exam')
-            })
+                  //create exam under user
+                  axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
+                  .then(response1=>{
+                      router.push('/exam')
+                  })
 
-         }else{
-            
-         }
-         
-     })
+              }else{
+                  
+              }
+              
+          })
 
 
 
 
 
       }else{
+        setloadingButton(false)
+
         setSshowHideModal(true)
       }
 
     }
 
 
+console.log(examinfo);
+console.log(userexaminfo);
 
 
   return (
@@ -134,7 +139,6 @@ export const Account = (props) => {
                        <p>State Date: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.start_time}</Moment></p>
                        <p>End Date: <Moment format="YYYY-MMMM-DD hh:mm:ss A">{examinfo.end_time}</Moment></p>
 
-                       <p>Total Questions: {examinfo.qsn_ans.length}</p>
                        <p>Pass: {examinfo.pass_percentage} %</p>
 
                       {/* <p>{userinfo.email}</p> */}
@@ -149,8 +153,9 @@ export const Account = (props) => {
                         ?
                           userexaminfo.exam_score===undefined
                           ?
-
-                          <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam}><Edit3  size={18} /> Continue Exam</button>
+                          <center>
+                          <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam} id='continueexam'><Edit3  size={18} disabled={loadingButton} />{loadingButton?`Please wait...`:`Continue Exam`} </button>
+                          </center>
                           :
                           <>
                                <center>
@@ -211,9 +216,9 @@ export const Account = (props) => {
                           </>
 
                         :
-                         <>
-                        <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam}><Check size={18} /> Start Exam</button>
-                        </>
+                         <center className="mt-5">
+                          <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam} id='startexam'><Check size={18} disabled={loadingButton} />{loadingButton?`Please wait...`:`Start Exam`}</button>
+                        </center>
 
                         }
 

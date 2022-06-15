@@ -7,11 +7,13 @@ import QuizBody from "../components/QuizBody";
 import cookie from 'react-cookies';
 import _, { each } from 'lodash';
 import moment from 'moment';
+import { Bookmark, Check, ChevronRight, ChevronsLeft, ChevronsRight, Save, XSquare } from 'react-feather';
 export class index extends Component {
 
  constructor(props){
      super(props)
      this.state={
+        buttonLoading:false,
         loadingPage:true,
         exam_info:null,
         exam_question_answer_data:null,
@@ -304,7 +306,8 @@ export class index extends Component {
             }
         });
         this.setState({
-            exam_score:score
+            exam_score:score,
+            loadingButton:true
         })
 
 
@@ -364,7 +367,7 @@ export class index extends Component {
                                 <p>Attempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user!==undefined }).length}</p>
                                 <p>Unattempted: {_.filter(this.state.exam_question_answer_data, function(o) { return o.answer_user===undefined }).length}</p>
                                 <br/>
-                                <button className="btn btn-primary text-white" onClick={this.handleSubmitExam}>Submit</button>
+                                <button className="btn btn-primary text-white" onClick={this.handleSubmitExam} disabled={this.state.loadingButton}>{this.state.loadingButton?`Please wait...`:<><Save size={18} /> Submit</>}</button>
                             </center>
                         </div>
                         </>
@@ -410,7 +413,7 @@ export class index extends Component {
                                 {this.state.showQuestion===1
                                 ?<></>
                                 :
-                                <button className="btn btn-primary text-white" onClick={()=>this.setState({showQuestion:this.state.showQuestion-1})}>Prev</button>
+                                <button className="btn btn-primary text-white" onClick={()=>this.setState({showQuestion:this.state.showQuestion-1})}><ChevronsLeft size={18} /> Prev</button>
                                 }
                                 </div>
                                 <div className="col-4 text-center">
@@ -419,8 +422,8 @@ export class index extends Component {
                                 <>
                                     {
                                         this.state.exam_question_answer_data[this.state.showQuestion-1].marked_for_review===false?
-                                          <button className="btn btn-primary text-white" onClick={()=>this.reviewCurrentQuestion()}> Mark for Review</button>
-                                         :<button className="btn btn-primary text-white" onClick={()=>this.unReviewCurrentQuestion()}> Remove review mark</button>
+                                          <button className="btn btn-primary text-white" onClick={()=>this.reviewCurrentQuestion()}><Bookmark size={18} /> Mark for Review</button>
+                                         :<button className="btn btn-primary text-white" onClick={()=>this.unReviewCurrentQuestion()}><XSquare size={18} /> Remove review mark</button>
                                     }
                                     </>
 
@@ -429,12 +432,12 @@ export class index extends Component {
                                 <div className="col-4">
                                 {this.state.showQuestion===this.state.exam_question_answer_data.length
                                 ?
-                                <><button className="btn btn-primary text-white"  style={{float:'right'}} onClick={()=>this.handleSubmitExam()}>Submit</button></>
+                                <><button className="btn btn-primary text-white"  style={{float:'right'}} onClick={()=>this.handleSubmitExam()} disabled={this.state.loadingButton}>{this.state.loadingButton?`Please wait...`:<><Save size={18} /> Submit</>}</button></>
                                 :  <>
                                     {
                                         this.state.exam_question_answer_data[this.state.showQuestion-1].answer_user===undefined?
-                                       <button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.handleSkipQuestion()}>Skip</button>
-                                     :<button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.setState({showQuestion:this.state.showQuestion+1})}>Next</button>
+                                       <button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.handleSkipQuestion()}>Skip <ChevronRight size={18} /></button>
+                                     :<button className="btn btn-primary text-white" style={{float:'right'}} onClick={()=>this.setState({showQuestion:this.state.showQuestion+1})}>Next <ChevronsRight size={18} /></button>
                                     }
                                     </>
                                 }
@@ -479,7 +482,7 @@ export class index extends Component {
                                     <p className="col-6"><span id="skipped-element" className="me-1"></span> Skipped Question </p>
                                     <p className="col-6"><span id="current-element" className="me-1"></span> Current Question </p>
                                 </div>
-                                <button className="btn btn-primary text-white mt-2 w-100"  onClick={()=>this.handleSubmitExam()}>Submit</button>
+                                <button className="btn btn-primary text-white mt-2 w-100"  onClick={()=>this.handleSubmitExam()} disabled={this.state.loadingButton}>{this.state.loadingButton?`Please wait...`:<><Save size={18} /> Submit</>}</button>
                             </div>
                         </div>
                         </>
