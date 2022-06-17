@@ -11,25 +11,18 @@ import Moment from 'react-moment';
 import TableDashboard from './components/TableDashboard';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
-
-
 import { Check, Edit3, Eye, X } from 'react-feather';
 
 export const Account = (props) => {
   const router = useRouter()
 
     const [loadingButton,setloadingButton]=useState(false);
-
-
     const [loadingPage,setloadingPage]=useState(true);
     const [examfound,setExamFound]=useState(false);
     const [userinfo,setUserInfo]=useState(cookie.load('qtonix_quiz_userdata'));
     const [examinfo,setUExaminfo]=useState(null);
     const [userexaminfo,setUserExaminfo]=useState(null);
     const [showHideModal,setSshowHideModal]=useState(false);
-
-
-    
 
 
     useEffect(()=>{
@@ -154,7 +147,7 @@ console.log(userexaminfo);
                           userexaminfo.exam_score===undefined
                           ?
                           <center>
-                          <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam} id='continueexam'><Edit3  size={18} disabled={loadingButton} />{loadingButton?`Please wait...`:`Continue Exam`} </button>
+                            <button className='btn btn-primary text-white me-5 mt-5' onClick={startExam} id='continueexam'><Edit3  size={18} disabled={loadingButton} />{loadingButton?`Please wait...`:`Continue Exam`} </button>
                           </center>
                           :
                           <>

@@ -91,11 +91,16 @@ body{
         color: #ff5722;
     }
 }
-.disc-list li{
+.disc-list{
+
+        padding-left: 20px;
+    li{
+        
+        list-style: initial;
+        margin-left: 30px;
+    }
     
-    list-style: initial;
-    margin-left: 30px;
-}
+} 
 
 .bg-correct{
     background-color: #4caf50;
@@ -210,4 +215,7 @@ body{
     p{
         color: black !important;
     }
+}
+.btn-yellow{
+    background-color:yellow;
 }

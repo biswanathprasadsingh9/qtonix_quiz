@@ -124,9 +124,7 @@ export const Register = (props) => {
             <div className="row align-items-center">
             <div className="col-xl-5 order-2 order-xl-0">
                 <div className="signup-area-textwrapper">
-                    <br />
-                    <br />
-                    <br />
+                   
 
                 <h2 className="font-title--md mb-0">Register</h2>
                 <p className="mt-2 mb-lg-4 mb-3">Already have account? <Link href={'/login'}><a className="text-black-50">Login</a></Link></p>

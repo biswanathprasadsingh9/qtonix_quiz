@@ -108,7 +108,6 @@ export const Result = (props) => {
                                         }}
                                      />
                                      <h4 style={{color: "#0ecd0e",marginTop: '10%'}} >Pass </h4>
-                                     <p>Pass Mark: {examinfo.exam_info.pass_percentage}%</p>
                                     {/*<div className="students-info-intro-end justify-content-center mt-3">
                                         <div className="enrolled-courses">
                                             <a className='btn btn-primary text-white' href={`${process.env.backendURLPDF}/${examinfo.student_exam_code}.pdf`}>Download Certificate</a>
@@ -136,7 +135,6 @@ export const Result = (props) => {
                                         }}
                                      />
                                          <h4 style={{color: "#ff5151",marginTop: '10%'}}>Fail </h4>
-                                         <p>Pass Mark: {examinfo.exam_info.pass_percentage}%</p>
                                         
                                     </>}
                                 </div>
@@ -163,7 +161,7 @@ export const Result = (props) => {
                             return(
                                 <div className={`qbox students-info-intro p-3 ${data.answer_user===data.answer && data.answer_user!==undefined?'corrent-results':''} ${data.answer_user!==data.answer && data.answer_user!==undefined?'wrong-results':''} ` } key={key}>
                                     <p style={{marginBottom:'10px',textDecoration:'underline'}}>Questions- {key+1}/{examinfo.exam_question_answer_data.length}</p>
-                                        <h5 style={{textIndent:'30px'}}>{data.question}</h5>
+                                        <h5 style={{paddingLeft:'30px'}}>{data.question}</h5>
                                         <ul className="disc-list">
                                     {data.options.map((optn,okey)=>{
 
