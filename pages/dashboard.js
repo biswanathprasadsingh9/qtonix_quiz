@@ -12,6 +12,7 @@ import TableDashboard from './components/TableDashboard';
 import { CircularProgressbar } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import { Check, Edit3, Eye, X } from 'react-feather';
+import {osName,osVersion,browserName,browserVersion,deviceType,mobileVendor,mobileModel,fullBrowserVersion,isAndroid,isDesktop,isIOS,isMacOs,isMobile,isSmartTV,isTablet,isWearable,isWinPhone,isWindows } from 'react-device-detect';
 
 export const Account = (props) => {
   const router = useRouter()
@@ -23,12 +24,20 @@ export const Account = (props) => {
     const [examinfo,setUExaminfo]=useState(null);
     const [userexaminfo,setUserExaminfo]=useState(null);
     const [showHideModal,setSshowHideModal]=useState(false);
+    const [ipinfo, setIpInfo]=useState(null)
 
 
     useEffect(()=>{
       axios.post(`${process.env.backendURL}/exam/userdashboard`,{user_id:cookie.load('qtonix_quiz_userdata')._id})
      .then(response=>{
-       console.log(response.data)
+
+
+        axios.get('https://json.geoiplookup.io')
+        .then(response=>{
+          setIpInfo(response.data)
+        })
+
+
         
         if(response.data.examinfo){
           setUExaminfo(response.data.examinfo);
@@ -64,7 +73,28 @@ export const Account = (props) => {
                       exam_question_answer_data:response.data.questions,
                       exam_start:true,
                       exam_start_time:Date.now(),
-                      exam_start_datetime:moment().format()
+                      exam_start_datetime:moment().format(),
+                      ip_info:ipinfo,
+                      device_info:{
+                        osName:osName,
+                        osVersion:osVersion,
+                        isDesktop:isDesktop,
+                        isAndroid:isAndroid,
+                        isIOS:isIOS,
+                        isMacOs:isMacOs,
+                        isMobile:isMobile,
+                        isSmartTV:isSmartTV,
+                        isTablet:isTablet,
+                        isWearable:isWearable,
+                        isWinPhone:isWinPhone,
+                        isWindows:isWindows,
+                        mobileVendor:mobileVendor,
+                        mobileModel:mobileModel,
+                        deviceType:deviceType,
+                        browserName:browserName,
+                        browserVersion:browserVersion,
+                        fullBrowserVersion:fullBrowserVersion,
+                      }
                   }
 
                   //create exam under user
@@ -92,8 +122,9 @@ export const Account = (props) => {
     }
 
 
-console.log(examinfo);
-console.log(userexaminfo);
+
+
+
 
 
   return (

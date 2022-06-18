@@ -8,6 +8,7 @@ import { useRouter } from 'next/router';
 import cookie from 'react-cookies';
 import Link from 'next/link';
 import { LogIn, Eye, EyeOff, } from 'react-feather';
+import {publicIp, publicIpv4, publicIpv6} from 'public-ip';
 
 export const Login = (props) => {
     const router = useRouter()
@@ -82,6 +83,9 @@ export const Login = (props) => {
                 })
         }
       };
+
+
+      console.log(publicIpv4());
 
 
   return (
