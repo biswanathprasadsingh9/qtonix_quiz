@@ -9,6 +9,7 @@ import ClientCaptcha from "react-client-captcha";
 import Link from 'next/link';
 import { Eye, EyeOff, UserPlus } from 'react-feather';
 import { useEffect } from 'react';
+import QuizBody from '../components/QuizBody';
 
 
 
@@ -25,7 +26,7 @@ export const Register = (props) => {
     const [eyePassword, setEyePassword] = useState(false);
     const [reyePassword, setReyePassword] = useState(false);
 
-    const [company, setCompany] = useState(null);
+    const [company, setCompany] = useState(false);
 
 
 
@@ -141,9 +142,10 @@ export const Register = (props) => {
         }
       };
 
+      console.log(data)
 
   return (
-    <Body>
+    <QuizBody>
         {pageloading
             ?
             <center>
@@ -166,15 +168,37 @@ export const Register = (props) => {
                 <br />
             </center>
             :
-        <section className="section signup-area signin-area">
-            
+        <section className="section bg-white" style={{marginTop:'-100px'}}>
+            {company!==null
+            ?
             <div className="container">
-                <div className="row align-items-center">
-                <div className="col-xl-5 order-2 order-xl-0">
-                    <div className="signup-area-textwrapper">
+                <div className="row">
+                <div className='col-xl-12 p-5'>
+                    <center>
+                      {company.logo===''
+                      ?
+                      <></>
+                      :
+                      <>
+                      <img src={`${company.logo}?tr=h-100,q-100`} />
+                      </>
+                      }
+                    </center>
+                    <center className="mt-5">
+                        <h1 className='h1-responsive'>{company.form_heading}</h1>
+                        <p>{company.form_subheading}</p>
+                    </center>
                     
+                </div>
+                <div className="col-lg-7 p-5">
+                    <div className="">
+                    
+                    <div className='mt-4'>
+                        <div dangerouslySetInnerHTML={{__html: company.form_body}}></div>
+                    </div>
+                    {/* <h2 className="font-title--md mb-0">{company!==null?company.form_heading:''}</h2>
+                    <h4>{company!==null?company.form_subheading:''}</h4>
 
-                    <h2 className="font-title--md mb-0">{company!==null?company.name:''} Register</h2>
                     <p className="mt-2 mb-lg-4 mb-3">Already have account? <Link href={'/login'}><a className="text-black-50">Login</a></Link></p>
                     <form onSubmit={handleSubmit}>
                         
@@ -271,23 +295,133 @@ export const Register = (props) => {
                         </div>
                         
                         
-                    </form>
+                        </form> */}
                     </div>
                 </div>
-                <div className="col-xl-7 order-1 order-xl-0">
-                    <div className="signup-area-image">
-                    <img src="/dist/images/signup/Illustration.png" alt="Illustration Image" className="img-fluid" />
+                <div className="col-lg-5 p-5" style={{backgroundColor:'#37869d'}}>
+                    <div className='mt-2'>
+                        <h4 className='text-white'>Register for the Webinar</h4>
+
+                    </div>
+                    <div className='mt-4'>
+                        <p className='text-white'>Date: Tuesday, June 17th, 2014</p>
+                        <p className='text-white'>Time: 11am PT / 2pm ET / 6pm GMT</p>
+                        <p className='text-white'>Duration: 1 Hour</p>
+                    </div>
+                    <div className='mt-4'>
+                    <form onSubmit={handleSubmit}>
+                        
+                        <div className="form-element">
+                            <div className="form-alert">
+                                <label className='text-white'>Name</label>
+                            </div>
+                            <div className="form-alert-input">
+                                <input type="text" placeholder="Your name" name='name' value={data.name} onChange={handleChange} />
+                            </div>
+                            {simpleValidator.current.message('name', data.name, 'required|min:4|max:30', { className: 'text-danger' })}
+
+                        </div>
+
+
+                        <div className="form-element">
+                            <div className="form-alert">
+                                <label className='text-white'>Email</label>
+                            </div>
+                            <div className="form-alert-input">
+                                <input type="text" placeholder="Your Email" name='email' value={data.email} onChange={handleChange} />
+                            </div>
+                            {simpleValidator.current.message('email', data.email, 'required|email', { className: 'text-danger' })}
+                        </div>
+
+                        <div className="form-element">
+                            <div className="form-alert">
+                                <label className='text-white'>Phone Number</label>
+                            </div>
+                            <div className="form-alert-input">
+                                <input type="text" placeholder="Ex. (508) 555-1234 or 5085551234" name='phone' value={data.phone} onChange={handleChange} />
+                                
+                            </div>
+                            {simpleValidator.current.message('phone', data.phone, 'required|phone', { className: 'text-danger' })}
+                        </div>
+
+
+                        <div className="form-element">
+                            <div className="form-alert">
+                                <label className='text-white'>Password</label>
+                            </div>
+                            <div className="form-alert-input">
+                                <input type={eyePassword?`text`:`password`} placeholder="Password" name='password' value={data.password} onChange={handleChange} />
+                                {eyePassword
+                                ?
+                                <div className="form-alert-icon cursor-pointer">
+                                    <EyeOff onClick={()=>setEyePassword(false)} />
+                                </div>
+                                :
+                                <div className="form-alert-icon cursor-pointer">
+                                    <Eye onClick={()=>setEyePassword(true)} />
+                                </div>
+                                }
+                            </div>
+                            {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
+
+                            <div className="form-alert-input mt-2">
+                            <input type={reyePassword?`text`:`password`} placeholder="Confirm Password" name='cpassword' value={data.cpassword} onChange={handleChange} />
+                            {reyePassword
+                                ?
+                                <div className="form-alert-icon cursor-pointer">
+                                    <EyeOff onClick={()=>setReyePassword(false)} />
+                                </div>
+                                :
+                                <div className="form-alert-icon cursor-pointer">
+                                    <Eye onClick={()=>setReyePassword(true)} />
+                                </div>
+                                }
+                            </div>
+                            {simpleValidator.current.message('password', data.password, 'required|min:5|max:20', { className: 'text-danger' })}
+
+                        </div>
+
+                    
+                        <div className="form-element">
+                            <div className="form-alert">
+                            <ClientCaptcha captchaCode={code => setCaptcha(code)} charsCount={8} width={200} />
+                            </div>
+                            <div className="form-alert-input">
+                                <input  placeholder="Your Captcha Code" name='captcha' value={data.captcha} onChange={handleChange} />
+                            </div>
+                            {simpleValidator.current.message('captcha', data.captcha, 'required', { className: 'text-danger' })}
+                        </div>
+
+
+                        
+                        
+                        
+                        <div className="form-element">
+                            {loading
+                            ?<button type="button" className="button button-lg bg-222 w-100" disabled>Please wait...</button>
+                            :<button type="submit" className="button button-lg bg-222 w-100"><UserPlus size={16} /> Sign in</button>
+                            }
+                        </div>
+                        
+                        
+                        </form> 
                     </div>
                 </div>
                 </div>
             </div>
+            :
+            <center>
+                Loading...
+            </center>
+            }
+            
             
         
         </section>
         }
 
 
-    </Body>
+    </QuizBody>
   )
 }
 

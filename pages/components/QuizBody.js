@@ -122,16 +122,16 @@ export class QuizBody extends Component {
     <nav className="navbar navbar-expand-xl navbar-light bg-transparent">
       <div className="container">
         {/* Logo */}
-        <Link href={'/dashboard'}>
+        {/* <Link href={'/dashboard'}>
         <a className="navbar-brand" >
           <img src="https://cdn.pixabay.com/photo/2017/02/17/15/25/quiz-2074324_960_720.png" alt="Logo" className="img-fluid" style={{height:'60px'}} />
-        </a></Link>
+        </a></Link> */}
         <button className="menu-icon-container">
           <span className="menu-icon" />
         </button>
         {/* Navbar Item */}
         <div className="collapse navbar-collapse d-none d-xl-block d-none d-xl-block" id="navbarSupportedContent">
-          <div className="navbar-nav mx-auto mb-2 mb-lg-0" >
+          <div className="navbar-nav mx-auto" >
               {(this.state.showTimer && !this.state.exam_timeout && this.state.exam_info && this.state.exam_start_time) ?
                  <>  
                    <Countdown
@@ -148,13 +148,13 @@ export class QuizBody extends Component {
           </div>
           
           <div className="d-flex align-items-center justify-content-between rightContent">
-            
+            <center>
             
             {this.state.userinfo===undefined
             ?
               <>
-              <Link href={'/login'}><a className="button button--text">Login</a></Link>
-              <Link href={'/register'}><a className="button button--text">Register</a></Link>
+              {/* <Link href={'/login'}><a className="button button--text">Login</a></Link>
+              <Link href={'/register'}><a className="button button--text">Register</a></Link> */}
               </>
             :
               <>
@@ -170,6 +170,7 @@ export class QuizBody extends Component {
               </div>
               </>
             }
+            </center>
             
           </div>
         </div>
