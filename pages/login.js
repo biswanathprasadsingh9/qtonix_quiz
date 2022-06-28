@@ -47,7 +47,16 @@ export const Login = (props) => {
                     setLoading(false)
                     if(response.data.response){
 
-                        console.log(response.data)
+
+                        var userinfo=response.data.data
+                        userinfo.clogo=response.data.companyinfo.logo;
+                        userinfo.cname=response.data.companyinfo.name;
+                        userinfo.cemail=response.data.companyinfo.email;
+                        userinfo.cphone=response.data.companyinfo.phone;
+
+
+
+                        console.log(userinfo)
 
                         toast.success('Login Success', {
                             position: "top-right",
@@ -61,12 +70,14 @@ export const Login = (props) => {
 
                         cookie.remove('qtonix_quiz_userdata', { path: '/' })
                         cookie.remove('qtonix_quiz_userid', { path: '/' })
+                        // cookie.remove('qtonix_quiz_companyinfoxq', { path: '/' })
+
     
                         var expires = new Date();
                         expires.setSeconds(21600);
-                        cookie.save('qtonix_quiz_userdata', response.data.data, { path: '/',expires });
+                        cookie.save('qtonix_quiz_userdata', userinfo, { path: '/',expires });
                         cookie.save('qtonix_quiz_userid', response.data.data._id, { path: '/',expires });
-                        cookie.save('qtonix_quiz_companyinfo', response.data.companyinfo, { path: '/',expires });
+                        // cookie.save('qtonix_quiz_companyinfoxq', response.data.companyinfo, { path: '/',expires });
 
 
                         router.push(`/dashboard`)

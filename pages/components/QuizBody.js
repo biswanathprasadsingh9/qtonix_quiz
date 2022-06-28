@@ -55,7 +55,7 @@ export class QuizBody extends Component {
   handleLogout=e=>{
     cookie.remove('qtonix_quiz_userdata', { path: '/' })
     cookie.remove('qtonix_quiz_userid', { path: '/' })
-    cookie.remove('qtonix_quiz_companyinfo', { path: '/' })
+    // cookie.remove('qtonix_quiz_companyinfoxq', { path: '/' })
 
     this.props.router.push('/login');
 
@@ -115,6 +115,7 @@ export class QuizBody extends Component {
 
     
   render() {
+    console.log(cookie.load('qtonix_quiz_userdata'))
     return (
         <>
 
@@ -130,17 +131,15 @@ export class QuizBody extends Component {
           <img src="https://cdn.pixabay.com/photo/2017/02/17/15/25/quiz-2074324_960_720.png" alt="Logo" className="img-fluid" style={{height:'60px'}} />
         </a></Link> */}
 
-        {cookie.load('qtonix_quiz_companyinfo')===undefined
+        {cookie.load('qtonix_quiz_userdata')===undefined
         ?
         <>
         
         </>
         :
-        <><img src={`${cookie.load('qtonix_quiz_companyinfo').logo}?tr=w-150`} alt="Logo" className="img-fluid" />
-      
+        <><img src={`${cookie.load('qtonix_quiz_userdata').clogo}?tr=w-150`} alt="Logo" className="img-fluid" />
         </>
         }
-
         <button className="menu-icon-container">
           <span className="menu-icon" />
         </button>
