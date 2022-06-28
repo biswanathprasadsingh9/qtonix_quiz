@@ -27,7 +27,7 @@ export class index extends Component {
      }
  }
  componentDidMount(){
-     axios.post(`${process.env.backendURL}/exam/latestexam`)
+     axios.post(`${process.env.backendURL}/exam/latestexam`,{userinfo:cookie.load('qtonix_quiz_userdata')})
      .then(response=>{
          if(response.data.response){
 

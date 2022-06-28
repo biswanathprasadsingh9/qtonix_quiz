@@ -149,21 +149,19 @@ export class QuizBody extends Component {
               {(this.state.showTimer && !this.state.exam_timeout && this.state.exam_info && this.state.exam_start_time) ?
                  <>  
                    <Countdown
-                          date={Number(this.state.exam_start_time) + Number(this.state.exam_info.duration)*60*1000}
-                          renderer={this.renderer}
-                          onComplete={this.examTimeout}
-                          onMount={this.onMountTimeout}
-                      /> 
+                        date={Number(this.state.exam_start_time) + Number(this.state.exam_info.duration)*60*1000}
+                        renderer={this.renderer}
+                        onComplete={this.examTimeout}
+                        onMount={this.onMountTimeout}
+                    /> 
                  </>
                 :
-                  <>
-                  </>
+                <>
+                </>
               }
           </div>
-          
           <div className="d-flex align-items-center justify-content-between rightContent">
             <center>
-            
             {this.state.userinfo===undefined
             ?
               <>
