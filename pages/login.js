@@ -9,6 +9,7 @@ import cookie from 'react-cookies';
 import Link from 'next/link';
 import { LogIn, Eye, EyeOff, } from 'react-feather';
 import {publicIp, publicIpv4, publicIpv6} from 'public-ip';
+import QuizBody from './components/QuizBody';
 
 export const Login = (props) => {
     const router = useRouter()
@@ -89,22 +90,22 @@ export const Login = (props) => {
 
 
   return (
-    <Body>
+    <QuizBody>
 
         {/* SignIn Area Starts Here */}
-        <section className="section signup-area signin-area">
+        <section className="section">
         <div className="container">
             <div className="row align-items-center">
-            <div className="col-xl-5 order-2 order-xl-0">
+            <div className="col-md-6 offset-md-3 p-5" style={{backgroundColor: 'rgb(55, 134, 157)'}}>
                 <div className="signup-area-textwrapper">
-                <h2 className="font-title--md mb-0">Login</h2>
-                <p className="mt-2 mb-lg-4 mb-3">Don&apos;t have account? <Link href={'/register'}><a className="text-black-50">Register</a></Link></p>
+                <h2 className="font-title--md mb-0 text-white" >Login</h2>
+                {/* <p className="mt-2 mb-lg-4 mb-3">Don&apos;t have account? <Link href={'/register'}><a className="text-black-50">Register</a></Link></p> */}
                 <form onSubmit={handleSubmit}>
                     
                    
                     <div className="form-element">
                         <div className="form-alert">
-                            <label>Email</label>
+                            <label className='text-white'>Email</label>
                         </div>
                         <div className="form-alert-input">
                             <input type="text" placeholder="Your Email" name='email' id='email' value={data.email} onChange={handleChange} />
@@ -115,8 +116,8 @@ export const Login = (props) => {
 
                     <div className="form-element">
                         <div className="form-alert">
-                            <label>Password</label>
-                            <Link href={'/forgetpassword'}><a className="text-primary fs-6">Forget Password</a></Link>
+                            <label className='text-white'>Password</label>
+                            <Link href={'/forgetpassword'}><a className="text-primary fs-6 text-white">Forget Password</a></Link>
                         </div>
                         <div className="form-alert-input">
                             <input type={eyePassword?`text`:`password`} placeholder="Your Password" name='password' id='password' value={data.password} onChange={handleChange} />
@@ -139,27 +140,29 @@ export const Login = (props) => {
                     
                     <div className="form-element">
                         {loading
-                        ?<button type="button" className="button button-lg button--primary w-100" disabled>Please wait...</button>
-                        :<button type="submit" className="button button-lg button--primary w-100" id='submit'><LogIn size={16} /> Login</button>
+                        ?<button type="button" className="button button-lg bg-222 w-100" disabled>Please wait...</button>
+                        :<button type="submit" className="button button-lg bg-222 w-100" id='submit'><LogIn size={16} /> Login</button>
                         }
                     </div>
                     
-                    
+                    <br />
+                    <br />
+
                 </form>
                 </div>
             </div>
-            <div className="col-xl-7 order-1 order-xl-0">
+            {/* <div className="col-xl-7 order-1 order-xl-0">
                 <div className="signup-area-image">
                 <img src="dist/images/signup/Illustration.png" alt="Illustration Image" className="img-fluid" />
                 </div>
-            </div>
+            </div> */}
             </div>
         </div>
         </section>
         {/* SignIn Area Ends Here */}
 
 
-    </Body>
+    </QuizBody>
   )
 }
 

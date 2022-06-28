@@ -53,7 +53,7 @@ export const Register = (props) => {
                 setPageLoading(false)
                 setCompany(response.data.data)
             }else{
-
+                router.push(`/404`)
             }
 
         })
