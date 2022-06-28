@@ -28,7 +28,7 @@ export const Account = (props) => {
 
 
     useEffect(()=>{
-      axios.post(`${process.env.backendURL}/exam/userdashboard`,{user_id:cookie.load('qtonix_quiz_userdata')._id})
+      axios.post(`${process.env.backendURL}/exam/userdashboard`,{userinfo:cookie.load('qtonix_quiz_userdata')})
      .then(response=>{
 
 
@@ -68,6 +68,7 @@ export const Account = (props) => {
 
                   var create_exam_for_user={
                       user_id:cookie.load('qtonix_quiz_userdata')._id,
+                      company_id:cookie.load('qtonix_quiz_companyinfo')._id,
                       exam_id:response.data.examinfo._id,
                       exam_info:response.data.examinfo,
                       exam_question_answer_data:response.data.questions,
