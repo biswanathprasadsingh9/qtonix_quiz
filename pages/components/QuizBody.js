@@ -21,9 +21,10 @@ export class QuizBody extends Component {
   }
 
   componentDidMount(){
+
   }
 
-/*  componentDidUpdate(prevProps, nextProps){
+  /* componentDidUpdate(prevProps, nextProps){
     console.log(prevProps);
     console.log(nextProps);
     if(prevProps !== nextProps){
@@ -36,7 +37,9 @@ export class QuizBody extends Component {
           });
      }
     }
-  }*/
+  } */
+
+  
   UNSAFE_componentWillReceiveProps(props){
      console.log(props);
      if( props.state_data){
@@ -47,8 +50,6 @@ export class QuizBody extends Component {
             exam_timeout:props.state_data.exam_timeout
           });
      }
-     
-     
   }
 
 
@@ -75,7 +76,6 @@ export class QuizBody extends Component {
         }
         axios.post(`${process.env.backendURL}/exam/start_exam`,temp_data)
         .then(response=>{
-        
          this.props.handleExamTimeout(true);
         })
     }

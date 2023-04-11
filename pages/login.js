@@ -55,32 +55,45 @@ export const Login = (props) => {
                         userinfo.cphone=response.data.companyinfo.phone;
 
 
-
-                        console.log(userinfo)
-
-                        toast.success('Login Success', {
-                            position: "top-right",
-                            autoClose: 5000,
-                            hideProgressBar: false,
-                            closeOnClick: true,
-                            pauseOnHover: true,
-                            draggable: true,
-                            progress: undefined,
-                        });
-
-                        cookie.remove('qtonix_quiz_userdata', { path: '/' })
-                        cookie.remove('qtonix_quiz_userid', { path: '/' })
-                        // cookie.remove('qtonix_quiz_companyinfoxq', { path: '/' })
-
+                        if(userinfo.type==='Student'){
+                            toast.success('Login Success', {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
     
-                        var expires = new Date();
-                        expires.setSeconds(21600);
-                        cookie.save('qtonix_quiz_userdata', userinfo, { path: '/',expires });
-                        cookie.save('qtonix_quiz_userid', response.data.data._id, { path: '/',expires });
-                        // cookie.save('qtonix_quiz_companyinfoxq', response.data.companyinfo, { path: '/',expires });
+                            cookie.remove('qtonix_quiz_userdata', { path: '/' })
+                            cookie.remove('qtonix_quiz_userid', { path: '/' })
+                            // cookie.remove('qtonix_quiz_companyinfoxq', { path: '/' })
+    
+        
+                            var expires = new Date();
+                            expires.setSeconds(21600);
+                            cookie.save('qtonix_quiz_userdata', userinfo, { path: '/',expires });
+                            cookie.save('qtonix_quiz_userid', response.data.data._id, { path: '/',expires });
+                            // cookie.save('qtonix_quiz_companyinfoxq', response.data.companyinfo, { path: '/',expires });
+    
+    
+                            router.push(`/dashboard`)
+                        }else{
+                            toast.error('Please login as student account', {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                            });
+                        }
 
 
-                        router.push(`/dashboard`)
+
+                        
 
     
                     }else{
