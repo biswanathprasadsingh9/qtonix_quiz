@@ -38,12 +38,16 @@ export class index extends Component {
                 exam_question_answer_data:response.data.questions
             }
 
+            console.log('response.data',response.data);
+            console.log('create_exam_for_user',create_exam_for_user)
+
+
 
             //create exam under user
-            axios.post(`${process.env.backendURL}/exam/exam_create_view1`,create_exam_for_user)
+            axios.post(`${process.env.backendURL}/exam/exam_create_view`,create_exam_for_user)
             .then(response1=>{
                 
-                console.log(response.data.examinfo)
+                console.log('response1.data',response1.data)
 
                     /* let questions=response1.data.datas.exam_question_answer_data;
                     questions.map((question,index) =>{
@@ -68,7 +72,22 @@ export class index extends Component {
                     Router.push(`/exam/results?quiz=629f424629f4241b6c5da7ecf6012ad629f4241b6c5da7ecf6012ad1b6c5da7e629f4241b6c5da7ecf6012adcf6012ad&e=${response.data.examinfo._id}&u=${cookie.load('qtonix_quiz_userdata')._id}`)
                 }else{
 
-                     let questions=response1.data.datas.exam_question_answer_data;
+                    //  let questions=response1.data.datas.exam_question_answer_data;
+                    // questions.map((question,index) =>{
+                    //         question.marked_for_review==undefined?question.marked_for_review=false:true; 
+                    //         question.skipped==undefined?question.skipped=false:true; 
+                    //  })
+                    // this.setState({
+                    //     loadingPage:false,
+                    //     exam_info:response1.data.datas.exam_info,
+                    //     exam_question_answer_data:response1.data.datas.exam_question_answer_data,
+                    //     exam_start:response1.data.datas.exam_start,
+                    //     exam_start_time:response1.data.datas.exam_start_time,
+                    //     exam_timeout:response1.data.datas.exam_timeout,
+                    // })
+
+
+                    let questions=response1.data.datas.exam_question_answer_data;
                     questions.map((question,index) =>{
                             question.marked_for_review==undefined?question.marked_for_review=false:true; 
                             question.skipped==undefined?question.skipped=false:true; 
@@ -76,7 +95,7 @@ export class index extends Component {
                     this.setState({
                         loadingPage:false,
                         exam_info:response1.data.datas.exam_info,
-                        exam_question_answer_data:response1.data.datas.exam_question_answer_data,
+                        exam_question_answer_data:create_exam_for_user.exam_question_answer_data,
                         exam_start:response1.data.datas.exam_start,
                         exam_start_time:response1.data.datas.exam_start_time,
                         exam_timeout:response1.data.datas.exam_timeout,
@@ -276,6 +295,7 @@ export class index extends Component {
 
 
   render() {
+    console.log('this.state',this.state)
     return (
       <QuizBody state_data={this.state}  handleExamTimeout={(value)=>{ this.handleExamTimeout(value); }}>
         <Auth>
